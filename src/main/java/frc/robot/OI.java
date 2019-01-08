@@ -7,7 +7,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.drivetrain.DriveForADistance;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -42,5 +46,21 @@ public class OI {
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
 
-	public static XboxController driverController = new XboxController(0);
+	public static final int AButton = 1;
+	public static final int BButton = 2;
+	public static final int XButton = 3;
+	public static final int YButton = 4;
+	public static final int LeftBumper = 5;
+	public static final int RightBumper = 6;
+	public static final int BackButton = 7;
+	public static final int StartButton = 8;
+	public static final int LeftStick = 9;
+	public static final int RightStick = 10;
+
+	public static final XboxController driverController = new XboxController(0);
+	public static final Button driveForADistance = new JoystickButton(driverController, AButton);
+
+	public OI() {
+		driveForADistance.whenPressed(new DriveForADistance(100, -0.5));
+	}
 }
