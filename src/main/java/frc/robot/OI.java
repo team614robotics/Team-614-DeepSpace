@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.drivetrain.DriveForADistance;
+import frc.robot.commands.drivetrain.RotateToAngle;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -59,8 +60,10 @@ public class OI {
 
 	public static final XboxController driverController = new XboxController(0);
 	public static final Button driveForADistance = new JoystickButton(driverController, AButton);
+	public static final Button rotateToAngle = new JoystickButton(driverController, BButton);
 
 	public OI() {
 		driveForADistance.whenPressed(new DriveForADistance(100, -0.5));
+		rotateToAngle.whenPressed(new RotateToAngle(90, false));
 	}
 }
