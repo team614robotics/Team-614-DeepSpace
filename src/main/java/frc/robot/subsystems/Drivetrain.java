@@ -59,8 +59,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 		turnController.setOutputRange(-1.0, 1.0);
 		turnController.setAbsoluteTolerance(turnTolerance);
 		turnController.setContinuous(true);
-
-		LiveWindow.addActuator("DriveSystem", "RotateController", turnController);
+		LiveWindow.addActuator("Drivetrain", "TurnController", turnController);
 	}
 
 	public void initDefaultCommand() {

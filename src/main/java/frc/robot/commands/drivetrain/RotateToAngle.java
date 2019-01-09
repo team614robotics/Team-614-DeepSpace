@@ -45,11 +45,11 @@ public class RotateToAngle extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		if (timeSinceInitialized() > 1.5) {
-			if (Robot.drivetrain.leftEncoder.getRate() < 2.5 && Robot.drivetrain.leftEncoder.getRate() > -2.5) {
-				return true;
-			}
+		// if (timeSinceInitialized() > 1.5) {
+		if (Robot.drivetrain.leftEncoder.getRate() < 2.5 && Robot.drivetrain.leftEncoder.getRate() > -2.5) {
+			return true;
 		}
+		// }
 		return false;
 	}
 
