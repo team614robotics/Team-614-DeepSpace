@@ -31,10 +31,15 @@ public class RobotMap {
 	public static final int rightMotorA = 2;
 	public static final int rightMotorB = 3;
 
+	public static final int elevatorMotor = 4;
+
 	// ENCODERS
 	
-	public static final int leftMotorEncoderA = 0;
-	public static final int leftMotorEncoderB = 1;
+	public static final int drivetrainEncoderA = 0;
+	public static final int drivetrainEncoderB = 1;
+
+	public static final int elevatorEncoderA = 2;
+	public static final int elevatorEncoderB = 3;
 	
 	// DRIVETRAIN CONSTANTS
 	
@@ -57,6 +62,9 @@ public class RobotMap {
 	// PNEUMATICS
 	
 	public static final int compressor = 0;
+
+	public static final int umbrellaPistonA = 0;
+	public static final int umbrellaPistonB = 0;
 	
 	public static final DoubleSolenoid.Value PistonOut = DoubleSolenoid.Value.kForward;
 	public static final DoubleSolenoid.Value PistonIn = DoubleSolenoid.Value.kReverse;

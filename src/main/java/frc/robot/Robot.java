@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SPI;
 
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.DrivetrainCompanion;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Pneumatics;;
 
 /**
@@ -31,8 +31,8 @@ import frc.robot.subsystems.Pneumatics;;
 public class Robot extends TimedRobot {
 	public static AHRS navX;
 	public static Drivetrain drivetrain;
-	public static DrivetrainCompanion drivetrainCompanion;
 	public static Pneumatics pneumatics;
+	public static Elevator elevator;
 	public static OI oi;
 
 	Command autonomousCommand;
@@ -51,8 +51,8 @@ public class Robot extends TimedRobot {
 		}
 
 		drivetrain = new Drivetrain();
-		drivetrainCompanion = new DrivetrainCompanion();
 		pneumatics = new Pneumatics();
+		elevator = new Elevator();
 		oi = new OI();
 
 		// chooser.setDefaultOption("Default Auto", new Command());

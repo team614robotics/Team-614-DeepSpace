@@ -15,10 +15,10 @@ public class ToggleUmbrella extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		if (Robot.pneumatics.getIntakeState().equals(RobotMap.PistonIn)) {
-			Robot.pneumatics.setIntakeState(RobotMap.PistonOut);
+		if (Robot.pneumatics.getUmbrellaState().equals(RobotMap.PistonIn)) {
+			Robot.pneumatics.setUmbrellaState(RobotMap.PistonOut);
 		} else {
-			Robot.pneumatics.setIntakeState(RobotMap.PistonIn);
+			Robot.pneumatics.setUmbrellaState(RobotMap.PistonIn);
 		}
 	}
 

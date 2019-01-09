@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
-public class DrivetrainCompanion extends Subsystem implements PIDOutput {
-	PIDController distanceController;
+public class PIDCompanion extends Subsystem implements PIDOutput {
+	private PIDController distanceController;
 	private double PIDdistanceSpeed;
 	private boolean usingDistancePID;
 
@@ -18,15 +18,9 @@ public class DrivetrainCompanion extends Subsystem implements PIDOutput {
 	/* controllers by displaying a form where you can enter new P, I, */
 	/* and D constants and test the mechanism. */
 
-	public final double distanceTolerance = 0.1f;
-	public double last_world_linear_accel_x;
-	public double last_world_linear_accel_y;
-	public double last_world_linear_accel_z;
-	public double currentJerkX;
-	public double currentJerkY;
-	public double currentJerkZ;
+	private final double distanceTolerance = 0.1f;
 
-	public DrivetrainCompanion() {
+	public PIDCompanion() {
 		usingDistancePID = false;
 
 		distanceController = new PIDController(RobotMap.drivetrainDistanceP, RobotMap.drivetrainDistanceI, RobotMap.drivetrainDistanceD, RobotMap.drivetrainDistanceF, Robot.drivetrain.leftEncoder, this);
@@ -37,25 +31,11 @@ public class DrivetrainCompanion extends Subsystem implements PIDOutput {
 		/* tuning of the Turn Controller's P, I and D coefficients. */
 		/* Typically, only the P value needs to be modified. */
 		LiveWindow.addActuator("Drivetrain", "DistanceController", distanceController);
-
 	}
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
-		// setDefaultCommand(new CollisionDetected());
-	}
-
-	public void runCollisionDetection() {
-		double curr_world_linear_accel_x = Robot.navX.getWorldLinearAccelX();
-		currentJerkX = curr_world_linear_accel_x - last_world_linear_accel_x;
-		last_world_linear_accel_x = curr_world_linear_accel_x;
-		double curr_world_linear_accel_y = Robot.navX.getWorldLinearAccelY();
-		currentJerkY = curr_world_linear_accel_y - last_world_linear_accel_y;
-		last_world_linear_accel_y = curr_world_linear_accel_y;
-		double curr_world_linear_accel_z = Robot.navX.getWorldLinearAccelZ();
-		currentJerkZ = curr_world_linear_accel_z - last_world_linear_accel_z;
-		last_world_linear_accel_z = curr_world_linear_accel_z;
 	}
 
 	public void setUsingDistancePID(boolean set) {

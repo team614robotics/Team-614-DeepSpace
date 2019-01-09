@@ -24,9 +24,9 @@ import frc.robot.commands.drivetrain.TankDrive;
  *
  */
 public class Drivetrain extends Subsystem implements PIDOutput {
-	PIDController turnController;
-
+	private PIDController turnController;
 	public DifferentialDrive drivetrain;
+	public PIDCompanion pid;
 	public Encoder leftEncoder;
 	private double PIDrotateToAngleRate;
 	private boolean usingTurnPID;
@@ -47,7 +47,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 		usingTurnPID = false;
 
 		drivetrain = new DifferentialDrive(leftMotors, rightMotors);
-		leftEncoder = new Encoder(RobotMap.leftMotorEncoderA, RobotMap.leftMotorEncoderB, false,
+		leftEncoder = new Encoder(RobotMap.drivetrainEncoderA, RobotMap.drivetrainEncoderB, false,
 				Encoder.EncodingType.k4X);
 
 		leftEncoder.setDistancePerPulse(RobotMap.DRIVETRAIN_DISTANCE_PER_PULSE);
@@ -59,6 +59,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 		turnController.setOutputRange(-1.0, 1.0);
 		turnController.setAbsoluteTolerance(turnTolerance);
 		turnController.setContinuous(true);
+		
 		LiveWindow.addActuator("Drivetrain", "TurnController", turnController);
 	}
 
@@ -93,32 +94,16 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 		}
 	}
 
-	public void setUsingDistancePID(boolean set) {
-		Robot.drivetrainCompanion.setUsingDistancePID(set);
-	}
-
 	public boolean getUsingTurnPID() {
 		return usingTurnPID;
-	}
-
-	public boolean getUsingDistancePID() {
-		return Robot.drivetrainCompanion.getUsingDistancePID();
 	}
 
 	public double getPIDRotateRate() {
 		return PIDrotateToAngleRate;
 	}
 
-	public double getPIDSpeed() {
-		return Robot.drivetrainCompanion.getPIDSpeed();
-	}
-
 	public PIDController getTurnController() {
 		return turnController;
-	}
-
-	public PIDController getDistanceController() {
-		return Robot.drivetrainCompanion.getDistanceController();
 	}
 
 	public void pidWrite(double output) {
