@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -51,4 +53,11 @@ public class RobotMap {
 	public static final double drivetrainDistanceI = 0;
 	public static final double drivetrainDistanceD = 0.0;
 	public static final double drivetrainDistanceF = 0;
+
+	// PNEUMATICS
+	
+	public static final int compressor = 0;
+	
+	public static final DoubleSolenoid.Value PistonOut = DoubleSolenoid.Value.kForward;
+	public static final DoubleSolenoid.Value PistonIn = DoubleSolenoid.Value.kReverse;
 }

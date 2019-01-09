@@ -18,7 +18,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SPI;
 
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.DrivetrainCompanion;;
+import frc.robot.subsystems.DrivetrainCompanion;
+import frc.robot.subsystems.Pneumatics;;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,6 +32,7 @@ public class Robot extends TimedRobot {
 	public static AHRS navX;
 	public static Drivetrain drivetrain;
 	public static DrivetrainCompanion drivetrainCompanion;
+	public static Pneumatics pneumatics;
 	public static OI oi;
 
 	Command autonomousCommand;
@@ -45,11 +47,12 @@ public class Robot extends TimedRobot {
 		try {
 			navX = new AHRS(SPI.Port.kMXP, (byte) 200);
 		} catch (RuntimeException e) {
-			DriverStation.reportError("NAVX ERROR:  " + e.getMessage(), true);
+			DriverStation.reportError("NAVX ERROR: " + e.getMessage(), true);
 		}
 
 		drivetrain = new Drivetrain();
 		drivetrainCompanion = new DrivetrainCompanion();
+		pneumatics = new Pneumatics();
 		oi = new OI();
 
 		// chooser.setDefaultOption("Default Auto", new Command());
