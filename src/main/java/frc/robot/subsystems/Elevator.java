@@ -10,14 +10,18 @@ import frc.robot.commands.elevator.ManualElevator;
 public class Elevator extends Subsystem {
 	private Spark motor;
 	public Encoder encoder;
-	public PIDCompanion pid;
+	public PIDCompanion companion;
 	private boolean manual = true;
 
 	public Elevator() {
 		motor = new Spark(RobotMap.elevatorMotor);
-		encoder = new Encoder(RobotMap.elevatorEncoderA, RobotMap.elevatorEncoderB);
-		pid = new PIDCompanion();
-		set(0);
+		encoder = new Encoder(RobotMap.elevatorEncoderA, RobotMap.elevatorEncoderB, false, Encoder.EncodingType.k4X);
+
+		encoder.setDistancePerPulse(RobotMap.DRIVETRAIN_DISTANCE_PER_PULSE);
+		// Change to elevator pulses per rev eventually.
+
+		companion = new PIDCompanion(RobotMap.elevatorDistanceP, RobotMap.elevatorDistanceI, RobotMap.elevatorDistanceD,
+				RobotMap.elevatorDistanceF, encoder, "Elevator", "Distance");
 	}
 
 	public boolean isManual() {
@@ -28,7 +32,7 @@ public class Elevator extends Subsystem {
 		this.manual = manual;
 
 		if (manual) {
-			pid.setUsingDistancePID(false);
+			companion.setUsingPID(false);
 			stop();
 		}
 	}

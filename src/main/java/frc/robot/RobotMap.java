@@ -45,9 +45,7 @@ public class RobotMap {
 	
 	public static final double DRIVETRAIN_WHEEL_DIAMETER = 6;
 	public static final double DRIVETRAIN_ENCODER_PULSES_PER_REV = 245;
-	public static final double DRIVETRAIN_DISTANCE_PER_PULSE = (RobotMap.DRIVETRAIN_WHEEL_DIAMETER * Math.PI) / RobotMap.DRIVETRAIN_ENCODER_PULSES_PER_REV;
-	
-	public static final double kCollisionThreshold_DeltaG = 0.6f;
+	public static final double DRIVETRAIN_DISTANCE_PER_PULSE = (DRIVETRAIN_WHEEL_DIAMETER * Math.PI) / DRIVETRAIN_ENCODER_PULSES_PER_REV;
 	
 	public static final double drivetrainRotationP = 0.1;
 	public static final double drivetrainRotationI = 0;
@@ -59,12 +57,22 @@ public class RobotMap {
 	public static final double drivetrainDistanceD = 0.0;
 	public static final double drivetrainDistanceF = 0;
 
+	public static final double ELEVATOR_TRACK_PERIMETER = 6;
+	public static final double ELEVATOR_ENCODER_PULSES_PER_REV = 245;
+	public static final double ELEVATOR_DISTANCE_PER_PULSE = ELEVATOR_TRACK_PERIMETER / ELEVATOR_ENCODER_PULSES_PER_REV;
+	
+
+	public static final double elevatorDistanceP = 0.1;
+	public static final double elevatorDistanceI = 0;
+	public static final double elevatorDistanceD = 0.0;
+	public static final double elevatorDistanceF = 0;
+
 	// PNEUMATICS
 	
 	public static final int compressor = 0;
 
-	public static final int umbrellaPistonA = 0;
-	public static final int umbrellaPistonB = 0;
+	public static final int grabberPistonA = 0;
+	public static final int grabberPistonB = 0;
 	
 	public static final DoubleSolenoid.Value PistonOut = DoubleSolenoid.Value.kForward;
 	public static final DoubleSolenoid.Value PistonIn = DoubleSolenoid.Value.kReverse;

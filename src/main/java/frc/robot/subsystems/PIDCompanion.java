@@ -2,35 +2,28 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import frc.robot.Robot;
-import frc.robot.RobotMap;
 
 public class PIDCompanion extends Subsystem implements PIDOutput {
-	private PIDController distanceController;
-	private double PIDdistanceSpeed;
-	private boolean usingDistancePID;
+	private PIDController controller;
 
-	/* The following PID Controller coefficients will need to be tuned */
-	/* to match the dynamics of your drive system. Note that the */
-	/* SmartDashboard in Test mode has support for helping you tune */
-	/* controllers by displaying a form where you can enter new P, I, */
-	/* and D constants and test the mechanism. */
+	private double speed;
+	private boolean usingPID;
 
-	private final double distanceTolerance = 0.1f;
+	private final double tolerance = 0.1f;
 
-	public PIDCompanion() {
-		usingDistancePID = false;
+	public PIDCompanion(double Kp, double Ki, double Kd, double Kf, PIDSource source, String subsystem, String name) {
+		usingPID = false;
 
-		distanceController = new PIDController(RobotMap.drivetrainDistanceP, RobotMap.drivetrainDistanceI, RobotMap.drivetrainDistanceD, RobotMap.drivetrainDistanceF, Robot.drivetrain.leftEncoder, this);
-		distanceController.setOutputRange(-1.0, 1.0);
-		distanceController.setAbsoluteTolerance(distanceTolerance);
+		controller = new PIDController(Kp, Ki, Kd, Kf, source, this);
 
-		/* Add the PID Controller to the Test-mode dashboard, allowing manual */
-		/* tuning of the Turn Controller's P, I and D coefficients. */
-		/* Typically, only the P value needs to be modified. */
-		LiveWindow.addActuator("Drivetrain", "DistanceController", distanceController);
+		controller.setOutputRange(-1.0, 1.0);
+		controller.setAbsoluteTolerance(tolerance);
+		// controller.setContinuous(true);
+
+		LiveWindow.addActuator(subsystem, name, controller);
 	}
 
 	public void initDefaultCommand() {
@@ -38,30 +31,30 @@ public class PIDCompanion extends Subsystem implements PIDOutput {
 		// setDefaultCommand(new MySpecialCommand());
 	}
 
-	public void setUsingDistancePID(boolean set) {
-		usingDistancePID = true;
-		if (usingDistancePID) {
-			distanceController.enable();
+	public void setUsingPID(boolean set) {
+		usingPID = set;
+		if (usingPID) {
+			controller.enable();
 		} else {
-			distanceController.disable();
+			controller.disable();
 		}
 	}
 
-	public boolean getUsingDistancePID() {
-		return usingDistancePID;
+	public boolean getUsingPID() {
+		return usingPID;
 	}
 
 	public double getPIDSpeed() {
-		return PIDdistanceSpeed;
+		return speed;
 	}
 
-	public PIDController getDistanceController() {
-		return distanceController;
+	public PIDController getController() {
+		return controller;
 	}
 
 	public void pidWrite(double output) {
-		if (usingDistancePID) {
-			PIDdistanceSpeed = output;
+		if (usingPID) {
+			speed = output;
 		}
 	}
 }

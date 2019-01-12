@@ -19,32 +19,32 @@ public class MoveElevator extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.elevator.pid.setUsingDistancePID(true);
-		Robot.elevator.pid.getDistanceController().setSetpoint(distance);
+		Robot.elevator.companion.setUsingPID(true);
+		Robot.elevator.companion.getController().setSetpoint(distance);
 		Robot.elevator.setManual(false);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		SmartDashboard.putNumber("PID Speed", Robot.elevator.pid.getPIDSpeed());
-		Robot.elevator.set(Robot.elevator.pid.getPIDSpeed());
+		SmartDashboard.putNumber("Elevator PID Speed", Robot.elevator.companion.getPIDSpeed());
+		Robot.elevator.set(Robot.elevator.companion.getPIDSpeed());
 	}
 
 	protected boolean isFinished() {
-		return timeSinceInitialized() > 0.2 && Robot.elevator.encoder.getRate() < 1
-				&& Robot.elevator.encoder.getRate() > -1;
+		return timeSinceInitialized() > 0.2 && Robot.elevator.encoder.getRate() < 0.5
+				&& Robot.elevator.encoder.getRate() > -0.5;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.elevator.pid.setUsingDistancePID(false);
+		Robot.elevator.companion.setUsingPID(false);
 		Robot.elevator.stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		Robot.elevator.pid.setUsingDistancePID(false);
+		Robot.elevator.companion.setUsingPID(false);
 		Robot.elevator.stop();
 	}
 }

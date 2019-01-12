@@ -15,7 +15,7 @@ public class ManualElevator extends Command {
 
 	public void execute() {
 		if (Robot.elevator.isManual()) {
-			Robot.elevator.set(OI.driverController.getY(Hand.kLeft));
+			Robot.elevator.set(OI.operatorController.getY(Hand.kLeft));
 		}
 	}
 

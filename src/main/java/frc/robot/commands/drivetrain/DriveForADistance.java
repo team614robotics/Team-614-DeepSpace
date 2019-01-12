@@ -23,22 +23,18 @@ public class DriveForADistance extends Command {
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		Robot.drivetrain.leftEncoder.reset();
-		Robot.drivetrain.setUsingTurnPID(true);
-		Robot.drivetrain.pid.setUsingDistancePID(true);
-		Robot.drivetrain.getTurnController().setSetpoint(Robot.navX.getYaw());
-		Robot.drivetrain.pid.getDistanceController().setSetpoint(distance);
-		// PID Controller Setting the setpoint which
-		// just returns the setpoint
+		Robot.drivetrain.turnCompanion.setUsingPID(true);
+		Robot.drivetrain.distanceCompanion.setUsingPID(true);
+		Robot.drivetrain.turnCompanion.getController().setSetpoint(Robot.navX.getYaw());
+		Robot.drivetrain.distanceCompanion.getController().setSetpoint(distance);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		SmartDashboard.putNumber("PID Rotate Rate", Robot.drivetrain.getPIDRotateRate());
-		SmartDashboard.putNumber("PID Speed", Robot.drivetrain.pid.getPIDSpeed());
+		SmartDashboard.putNumber("PID Rotate Rate", Robot.drivetrain.turnCompanion.getPIDSpeed());
+		SmartDashboard.putNumber("PID Speed", Robot.drivetrain.distanceCompanion.getPIDSpeed());
 		SmartDashboard.putNumber("navX Yaw", Robot.navX.getYaw());
-		Robot.drivetrain.arcadeDrive(speed * Robot.drivetrain.pid.getPIDSpeed(), Robot.drivetrain.getPIDRotateRate());
-		// Sets the setpoint at which how far you want the robot to go, it will
-		// manipulate the output whenever it needs to
+		Robot.drivetrain.arcadeDrive(speed * Robot.drivetrain.distanceCompanion.getPIDSpeed(), Robot.drivetrain.turnCompanion.getPIDSpeed());
 	}
 
 	protected boolean isFinished() {
@@ -48,16 +44,16 @@ public class DriveForADistance extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.drivetrain.pid.setUsingDistancePID(false);
-		Robot.drivetrain.setUsingTurnPID(false);
+		Robot.drivetrain.distanceCompanion.setUsingPID(false);
+		Robot.drivetrain.turnCompanion.setUsingPID(false);
 		Robot.drivetrain.stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		Robot.drivetrain.pid.setUsingDistancePID(false);
-		Robot.drivetrain.setUsingTurnPID(false);
+		Robot.drivetrain.distanceCompanion.setUsingPID(false);
+		Robot.drivetrain.turnCompanion.setUsingPID(false);
 		Robot.drivetrain.stop();
 	}
 }

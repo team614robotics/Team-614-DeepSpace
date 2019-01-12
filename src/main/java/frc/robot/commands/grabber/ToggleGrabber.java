@@ -1,4 +1,4 @@
-package frc.robot.commands.umbrella;
+package frc.robot.commands.grabber;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -8,17 +8,17 @@ import frc.robot.RobotMap;
 /**
  *
  */
-public class ToggleUmbrella extends Command {
-	public ToggleUmbrella() {
+public class ToggleGrabber extends Command {
+	public ToggleGrabber() {
 		requires(Robot.pneumatics);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		if (Robot.pneumatics.getUmbrellaState().equals(RobotMap.PistonIn)) {
-			Robot.pneumatics.setUmbrellaState(RobotMap.PistonOut);
+		if (Robot.pneumatics.getGrabberState().equals(RobotMap.PistonIn)) {
+			Robot.pneumatics.setGrabberState(RobotMap.PistonOut);
 		} else {
-			Robot.pneumatics.setUmbrellaState(RobotMap.PistonIn);
+			Robot.pneumatics.setGrabberState(RobotMap.PistonIn);
 		}
 	}
 

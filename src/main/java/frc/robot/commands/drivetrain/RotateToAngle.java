@@ -28,18 +28,18 @@ public class RotateToAngle extends Command {
 		// Robot.navX.reset();
 		// Robot.navX.zeroYaw();
 
-		Robot.drivetrain.setUsingTurnPID(true);
+		Robot.drivetrain.turnCompanion.setUsingPID(true);
 
 		if (useAbsoluteAngle) {
-			Robot.drivetrain.getTurnController().setSetpoint(angle % 360);
-		} else { // relative angle
-			Robot.drivetrain.getTurnController().setSetpoint((Robot.navX.getYaw() + angle));// % 360);
+			Robot.drivetrain.turnCompanion.getController().setSetpoint(angle % 360);
+		} else {
+			Robot.drivetrain.turnCompanion.getController().setSetpoint((Robot.navX.getYaw() + angle));
 		}
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.drivetrain.arcadeDrive(0.0, .8 * Robot.drivetrain.getPIDRotateRate());
+		Robot.drivetrain.arcadeDrive(0.0, .8 * Robot.drivetrain.turnCompanion.getPIDSpeed());
 		// Robot.drivetrain.arcadeDrive(0.0, Robot.drivetrain.getPIDRotateRate());
 	}
 
@@ -55,14 +55,14 @@ public class RotateToAngle extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.drivetrain.setUsingTurnPID(false);
+		Robot.drivetrain.turnCompanion.setUsingPID(false);
 		Robot.drivetrain.stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		Robot.drivetrain.setUsingTurnPID(false);
+		Robot.drivetrain.turnCompanion.setUsingPID(false);
 		Robot.drivetrain.stop();
 	}
 }

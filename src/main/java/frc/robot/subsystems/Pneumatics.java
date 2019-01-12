@@ -3,22 +3,23 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+
 import frc.robot.RobotMap;
 
 /**
  *
  */
 public class Pneumatics extends Subsystem {
-
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
 	public Compressor compressor;
-	public DoubleSolenoid umbrellaPiston;
+	public DoubleSolenoid grabberPiston;
 
 	public Pneumatics() {
 		compressor = new Compressor(RobotMap.compressor);
-		umbrellaPiston = new DoubleSolenoid(RobotMap.umbrellaPistonA, RobotMap.umbrellaPistonB);
+		// grabberPiston = new DoubleSolenoid(RobotMap.grabberPistonA, RobotMap.grabberPistonB);
+		// grabberPiston.set(RobotMap.PistonIn);
 	}
 
 	public void initDefaultCommand() {
@@ -27,11 +28,11 @@ public class Pneumatics extends Subsystem {
 		setDefaultCommand(new CompressorControl());
 	}
 
-	public DoubleSolenoid.Value getUmbrellaState() {
-		return umbrellaPiston.get();
+	public DoubleSolenoid.Value getGrabberState() {
+		return grabberPiston.get();
 	}
 
-	public void setUmbrellaState(DoubleSolenoid.Value state) {
-		umbrellaPiston.set(state);
+	public void setGrabberState(DoubleSolenoid.Value state) {
+		grabberPiston.set(state);
 	}
 }

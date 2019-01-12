@@ -147,6 +147,9 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Drivetrain Left Encoder Distance", drivetrain.leftEncoder.getDistance());
 		SmartDashboard.putNumber("Drivetrain Left Encoder Rate", drivetrain.leftEncoder.getRate());
 		SmartDashboard.putNumber("Drivetrain Left Encoder Get", drivetrain.leftEncoder.get());
+		SmartDashboard.putNumber("Elevator Encoder Distance", elevator.encoder.getDistance());
+		SmartDashboard.putNumber("Elevator Encoder Rate", elevator.encoder.getRate());
+		SmartDashboard.putNumber("Elevator Encoder Get", elevator.encoder.get());
 		SmartDashboard.putNumber("navX Yaw", Robot.navX.getYaw());
 	}
 

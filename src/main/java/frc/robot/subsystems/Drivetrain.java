@@ -23,16 +23,14 @@ import frc.robot.commands.drivetrain.TankDrive;
 /**
  *
  */
-public class Drivetrain extends Subsystem implements PIDOutput {
-	private PIDController turnController;
-	public DifferentialDrive drivetrain;
-	public PIDCompanion pid;
-	public Encoder leftEncoder;
-	private double PIDrotateToAngleRate;
-	private boolean usingTurnPID;
+public class Drivetrain extends Subsystem {
+	public PIDCompanion distanceCompanion;
+	public PIDCompanion turnCompanion;
 
-	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
+	public DifferentialDrive drivetrain;
+
+	public Encoder leftEncoder;
+
 	public VictorSP leftMotorA = new VictorSP(RobotMap.leftMotorA);
 	public VictorSP leftMotorB = new VictorSP(RobotMap.leftMotorB);
 	public VictorSP rightMotorA = new VictorSP(RobotMap.rightMotorA);
@@ -41,26 +39,21 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 	public SpeedController leftMotors = new SpeedControllerGroup(leftMotorA, leftMotorB);
 	public SpeedController rightMotors = new SpeedControllerGroup(rightMotorA, rightMotorB);
 
-	private static final double turnTolerance = 0.1f;
-
 	public Drivetrain() {
-		usingTurnPID = false;
-
 		drivetrain = new DifferentialDrive(leftMotors, rightMotors);
 		leftEncoder = new Encoder(RobotMap.drivetrainEncoderA, RobotMap.drivetrainEncoderB, false,
 				Encoder.EncodingType.k4X);
 
 		leftEncoder.setDistancePerPulse(RobotMap.DRIVETRAIN_DISTANCE_PER_PULSE);
 
-		turnController = new PIDController(RobotMap.drivetrainRotationP, RobotMap.drivetrainRotationI,
-				RobotMap.drivetrainRotationD, RobotMap.drivetrainRotationF, Robot.navX, this);
+		distanceCompanion = new PIDCompanion(RobotMap.drivetrainRotationP, RobotMap.drivetrainRotationI,
+				RobotMap.drivetrainRotationD, RobotMap.drivetrainRotationF, leftEncoder, "Drivetrain", "Distance");
 
-		turnController.setInputRange(-180.0f, 180.0f);
-		turnController.setOutputRange(-1.0, 1.0);
-		turnController.setAbsoluteTolerance(turnTolerance);
-		turnController.setContinuous(true);
-		
-		LiveWindow.addActuator("Drivetrain", "TurnController", turnController);
+		turnCompanion = new PIDCompanion(RobotMap.drivetrainRotationP, RobotMap.drivetrainRotationI,
+				RobotMap.drivetrainRotationD, RobotMap.drivetrainRotationF, Robot.navX, "Drivetrain", "Turn");
+
+		turnCompanion.getController().setInputRange(-180.0f, 180.0f);
+		turnCompanion.getController().setContinuous(true);
 	}
 
 	public void initDefaultCommand() {
@@ -77,38 +70,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 		drivetrain.arcadeDrive(0, 0);
 	}
 
-	public void setDistancePerPulse(double dpp) {
-		leftEncoder.setDistancePerPulse(dpp);
-	}
-
 	public void reset() {
 		leftEncoder.reset();
-	}
-
-	public void setUsingTurnPID(boolean set) {
-		usingTurnPID = set;
-		if (usingTurnPID) {
-			turnController.enable();
-		} else {
-			turnController.disable();
-		}
-	}
-
-	public boolean getUsingTurnPID() {
-		return usingTurnPID;
-	}
-
-	public double getPIDRotateRate() {
-		return PIDrotateToAngleRate;
-	}
-
-	public PIDController getTurnController() {
-		return turnController;
-	}
-
-	public void pidWrite(double output) {
-		if (usingTurnPID) {
-			PIDrotateToAngleRate = output;
-		}
 	}
 }

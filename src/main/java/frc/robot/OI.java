@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.drivetrain.DriveForADistance;
 import frc.robot.commands.drivetrain.RotateToAngle;
+import frc.robot.commands.elevator.MoveElevator;
+import frc.robot.commands.elevator.ToggleManual;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -58,11 +60,21 @@ public class OI {
 	public static final int RightStick = 10;
 
 	public static final XboxController driverController = new XboxController(0);
+	public static final XboxController operatorController = new XboxController(1);
+
 	public static final Button driveForADistance = new JoystickButton(driverController, AButton);
 	public static final Button rotateToAngle = new JoystickButton(driverController, BButton);
+	public static final Button moveElevatorHigh = new JoystickButton(operatorController, YButton);
+	public static final Button moveElevatorMedium = new JoystickButton(operatorController, BButton);
+	public static final Button moveElevatorLow = new JoystickButton(operatorController, AButton);
+	public static final Button toggleManual = new JoystickButton(operatorController, XButton);
 
 	public OI() {
 		driveForADistance.whenPressed(new DriveForADistance(100, -0.5));
 		rotateToAngle.whenPressed(new RotateToAngle(90, false));
+		moveElevatorHigh.whenPressed(new MoveElevator(150, 0.5));
+		moveElevatorMedium.whenPressed(new MoveElevator(100, 0.5));
+		moveElevatorLow.whenPressed(new MoveElevator(50, 0.5));
+		toggleManual.whenPressed(new ToggleManual());
 	}
 }
