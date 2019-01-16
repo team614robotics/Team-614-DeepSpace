@@ -19,7 +19,9 @@ import edu.wpi.first.wpilibj.SPI;
 
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Pneumatics;;
+import frc.robot.subsystems.Pneumatics;
+import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Climber;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,6 +35,8 @@ public class Robot extends TimedRobot {
 	public static Drivetrain drivetrain;
 	public static Pneumatics pneumatics;
 	public static Elevator elevator;
+	public static Vision vision;
+	public static Climber climber;
 	public static OI oi;
 
 	Command autonomousCommand;
@@ -53,6 +57,8 @@ public class Robot extends TimedRobot {
 		drivetrain = new Drivetrain();
 		pneumatics = new Pneumatics();
 		elevator = new Elevator();
+		vision = new Vision();
+		climber = new Climber();
 		oi = new OI();
 
 		// chooser.setDefaultOption("Default Auto", new Command());
@@ -143,7 +149,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		
+
 		SmartDashboard.putNumber("Drivetrain Left Encoder Distance", drivetrain.leftEncoder.getDistance());
 		SmartDashboard.putNumber("Drivetrain Left Encoder Rate", drivetrain.leftEncoder.getRate());
 		SmartDashboard.putNumber("Drivetrain Left Encoder Get", drivetrain.leftEncoder.get());
