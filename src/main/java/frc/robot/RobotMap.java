@@ -75,7 +75,7 @@ public class RobotMap {
 	public static final int compressor = 0;
 
 	public static final int grabberPistonA = 0;
-	public static final int grabberPistonB = 0;
+	public static final int grabberPistonB = 1;
 	
 	public static final DoubleSolenoid.Value PistonOut = DoubleSolenoid.Value.kForward;
 	public static final DoubleSolenoid.Value PistonIn = DoubleSolenoid.Value.kReverse;
