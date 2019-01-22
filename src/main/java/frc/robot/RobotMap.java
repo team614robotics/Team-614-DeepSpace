@@ -60,11 +60,18 @@ public class RobotMap {
 	public static final double drivetrainDistanceD = 0.0;
 	public static final double drivetrainDistanceF = 0;
 
+	public static double Drive_kP = 0.1;
+    public static double Drive_kF = 0.01;
+    public static double Drive_TurnHold_kP = 0.005;
+    public static double Drive_Turn_kP = 0;
+    public static double Drive_Turn_kD = 0;
+    public static double Drive_OkayError = 2;
+    public static double Drive_Turn_OkayError = 2;
+
 	public static final double ELEVATOR_TRACK_PERIMETER = 6;
 	public static final double ELEVATOR_ENCODER_PULSES_PER_REV = 245;
 	public static final double ELEVATOR_DISTANCE_PER_PULSE = ELEVATOR_TRACK_PERIMETER / ELEVATOR_ENCODER_PULSES_PER_REV;
 	
-
 	public static final double elevatorDistanceP = 0.1;
 	public static final double elevatorDistanceI = 0;
 	public static final double elevatorDistanceD = 0.0;

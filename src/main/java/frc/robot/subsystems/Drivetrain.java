@@ -63,6 +63,14 @@ public class Drivetrain extends Subsystem {
 		drivetrain.arcadeDrive(moveValue, -rotateValue);
 	}
 
+	public double getDistance() {
+		return leftEncoder.getDistance();
+	}
+
+	public double getAngle() {
+		return Robot.navX.getAngle();
+	}
+
 	public void stop() {
 		drivetrain.arcadeDrive(0, 0);
 	}
