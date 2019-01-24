@@ -5,15 +5,15 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import frc.robot.RobotMap;
-import frc.robot.commands.elevator.ManualElevator;
+import frc.robot.commands.arm.ManualArm;;
 
-public class Elevator extends Subsystem {
+public class Arm extends Subsystem {
 	private Spark motor;
 	public Encoder encoder;
 	public PIDCompanion companion;
 	private boolean manual = true;
 
-	public Elevator() {
+	public Arm() {
 		motor = new Spark(RobotMap.elevatorMotor);
 		encoder = new Encoder(RobotMap.elevatorEncoderA, RobotMap.elevatorEncoderB, false, Encoder.EncodingType.k4X);
 
@@ -21,7 +21,7 @@ public class Elevator extends Subsystem {
 		// Change to elevator pulses per rev eventually.
 
 		companion = new PIDCompanion(RobotMap.elevatorDistanceP, RobotMap.elevatorDistanceI, RobotMap.elevatorDistanceD,
-				RobotMap.elevatorDistanceF, encoder, "Elevator", "Distance");
+				RobotMap.elevatorDistanceF, encoder, "Arm", "Distance");
 	}
 
 	public boolean isManual() {
@@ -42,7 +42,7 @@ public class Elevator extends Subsystem {
 	}
 
 	public void initDefaultCommand() {
-		setDefaultCommand(new ManualElevator());
+		setDefaultCommand(new ManualArm());
 	}
 
 	public void stop() {

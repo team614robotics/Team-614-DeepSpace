@@ -1,4 +1,4 @@
-package frc.robot.commands.elevator;
+package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -9,12 +9,12 @@ import frc.robot.Robot;
  */
 public class ToggleManual extends Command {
 	public ToggleManual() {
-		requires(Robot.elevator);
+		requires(Robot.arm);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.elevator.setManual(true);
+		Robot.arm.setManual(true);
 	}
 
 	// Called repeatedly when this Command is scheduled to run

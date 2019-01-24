@@ -14,8 +14,9 @@ import frc.robot.commands.autonomous.DeliverCargo;
 import frc.robot.commands.autonomous.DeliverHatch;
 import frc.robot.commands.climber.DeployClimber;
 import frc.robot.commands.climber.RetractClimber;
-import frc.robot.commands.elevator.MoveElevator;
-import frc.robot.commands.elevator.ToggleManual;
+import frc.robot.commands.arm.MoveArm;
+import frc.robot.commands.arm.ToggleManual;
+import frc.robot.commands.grabber.ToggleGrabber;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -75,16 +76,20 @@ public class OI {
 	public static final Button deployClimber = new JoystickButton(operatorController, RightBumper);
 	public static final Button retractClimber = new JoystickButton(operatorController, LeftBumper);
 
+	public static final Button toggleGrabber = new JoystickButton(driverController, XButton);
+
 	public OI() {
 		deliverHatch.whenPressed(new DeliverHatch());
 		deliverCargo.whenPressed(new DeliverCargo());
 
-		moveElevatorHigh.whenPressed(new MoveElevator(150, 0.5));
-		moveElevatorMedium.whenPressed(new MoveElevator(100, 0.5));
-		moveElevatorLow.whenPressed(new MoveElevator(50, 0.5));
+		moveElevatorHigh.whenPressed(new MoveArm(150, 0.5));
+		moveElevatorMedium.whenPressed(new MoveArm(100, 0.5));
+		moveElevatorLow.whenPressed(new MoveArm(50, 0.5));
 		toggleManual.whenPressed(new ToggleManual());
 
 		deployClimber.whileHeld(new DeployClimber());
 		retractClimber.whileHeld(new RetractClimber());
+
+		toggleGrabber.whenPressed(new ToggleGrabber());
 	}
 }

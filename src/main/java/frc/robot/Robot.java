@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SPI;
 
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Climber;
@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
 	public static AHRS navX;
 	public static Drivetrain drivetrain;
 	public static Pneumatics pneumatics;
-	public static Elevator elevator;
+	public static Arm arm;
 	public static Vision vision;
 	public static Climber climber;
 	public static OI oi;
@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
 
 		drivetrain = new Drivetrain();
 		pneumatics = new Pneumatics();
-		elevator = new Elevator();
+		arm = new Arm();
 		vision = new Vision();
 		climber = new Climber();
 		oi = new OI();
@@ -153,9 +153,9 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Drivetrain Left Encoder Distance", drivetrain.leftEncoder.getDistance());
 		SmartDashboard.putNumber("Drivetrain Left Encoder Rate", drivetrain.leftEncoder.getRate());
 		SmartDashboard.putNumber("Drivetrain Left Encoder Get", drivetrain.leftEncoder.get());
-		SmartDashboard.putNumber("Elevator Encoder Distance", elevator.encoder.getDistance());
-		SmartDashboard.putNumber("Elevator Encoder Rate", elevator.encoder.getRate());
-		SmartDashboard.putNumber("Elevator Encoder Get", elevator.encoder.get());
+		SmartDashboard.putNumber("Arm Encoder Distance", arm.encoder.getDistance());
+		SmartDashboard.putNumber("Arm Encoder Rate", arm.encoder.getRate());
+		SmartDashboard.putNumber("Arm Encoder Get", arm.encoder.get());
 		SmartDashboard.putNumber("navX Yaw", Robot.navX.getYaw());
 	}
 
