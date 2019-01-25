@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import frc.robot.RobotMap;
-import frc.robot.commands.arm.ManualArm;;
+import frc.robot.commands.arm.ManualArm;
 
 public class Arm extends Subsystem {
 	private Spark motor;

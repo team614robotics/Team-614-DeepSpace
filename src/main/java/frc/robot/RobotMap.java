@@ -36,6 +36,8 @@ public class RobotMap {
 	public static final int climberMotorA = 5;
 	public static final int climberMotorB = 6;
 
+	public static final int intakeMotor = 7;
+
 	// ENCODERS
 	
 	public static final int drivetrainEncoderA = 0;
