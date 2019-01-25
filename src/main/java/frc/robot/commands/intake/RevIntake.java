@@ -16,6 +16,7 @@ public class RevIntake extends Command {
 	}
 
 	protected void initialize() {
+		Robot.intake.counter.reset();
 		Robot.intake.set(0);
 	}
 
@@ -26,7 +27,7 @@ public class RevIntake extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return false;
+		return Robot.intake.counter.get() > 0;
 	}
 
 	// Called once after isFinished returns true

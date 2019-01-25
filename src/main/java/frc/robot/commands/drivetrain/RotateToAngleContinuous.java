@@ -25,7 +25,7 @@ public class RotateToAngleContinuous extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		// if (Robot.vision.getDistance() > 50) {
-			Robot.drivetrain.arcadeDrive(0.0/* 5 */, Robot.vision.getX() * 0.1);
+			Robot.drivetrain.arcadeDrive(0.0/* 5 */, Robot.vision.getX() * 0.01);
 		// }
 	}
 

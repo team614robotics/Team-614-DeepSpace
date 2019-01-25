@@ -38,6 +38,8 @@ public class RobotMap {
 
 	public static final int intakeMotor = 7;
 
+	public static final int photoElectric = 0;
+
 	// ENCODERS
 	
 	public static final int drivetrainEncoderA = 0;
