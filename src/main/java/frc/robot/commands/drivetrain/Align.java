@@ -5,52 +5,51 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.vision;
+package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import frc.robot.Robot;
 
-/**
- *
- */
-public class VisionProcessing extends Command {
-	public VisionProcessing() {
+public class Align extends Command {
+	
+	private double SteeringAdjust; 
+	
+	public Align() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
-		requires(Robot.vision);
+		requires(Robot.drivetrain);
+		
 	}
 
 	// Called just before this Command runs the first time
+	@Override
 	protected void initialize() {
+		Robot.drivetrain.TankDrive(0.0, 0.0);
+		SteeringAdjust = Robot.vision.calcSteeringAdjust();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
+	@Override
 	protected void execute() {
-		// SmartDashboard.putNumber("Limelight X", Robot.vision.getX());
-		// SmartDashboard.putNumber("Limelight Y", Robot.vision.getY());
-		// SmartDashboard.putNumber("Limelight Area", Robot.vision.getArea());
-		// SmartDashboard.putNumber("Limelight Distance", Robot.vision.getDistance());
-		// Robot.vision.setHeadingError(Robot.vision.getX());
-		// if (Robot.vision.getDistance() > 50) {
-		// 	Robot.vision.setLED(2.0);
-		// } else {
-		// 	Robot.vision.setLED(0.0);
-		// }
+		Robot.drivetrain.TankDrive(SteeringAdjust, -SteeringAdjust);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
+	@Override
 	protected boolean isFinished() {
 		return false;
 	}
 
 	// Called once after isFinished returns true
+	@Override
 	protected void end() {
+		Robot.drivetrain.TankDrive(0.0, 0.0);
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
+	@Override
 	protected void interrupted() {
+		Robot.drivetrain.TankDrive(0.0, 0.0);
 	}
 }

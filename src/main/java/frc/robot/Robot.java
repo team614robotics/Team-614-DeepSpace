@@ -9,6 +9,7 @@ package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -38,6 +39,7 @@ public class Robot extends TimedRobot {
 	public static Vision vision;
 	public static Climber climber;
 	public static OI oi;
+	// public static DigitalInput photoElectric;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -60,6 +62,9 @@ public class Robot extends TimedRobot {
 		vision = new Vision();
 		climber = new Climber();
 		oi = new OI();
+
+		
+		// photoElectric = new DigitalInput(0);
 
 		// chooser.setDefaultOption("Default Auto", new Command());
 		// chooser.addOption("My Auto", new MyAutoCommand());
@@ -150,13 +155,18 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 
-		SmartDashboard.putNumber("Drivetrain Left Encoder Distance", drivetrain.leftEncoder.getDistance());
-		SmartDashboard.putNumber("Drivetrain Left Encoder Rate", drivetrain.leftEncoder.getRate());
-		SmartDashboard.putNumber("Drivetrain Left Encoder Get", drivetrain.leftEncoder.get());
-		SmartDashboard.putNumber("Elevator Encoder Distance", elevator.encoder.getDistance());
-		SmartDashboard.putNumber("Elevator Encoder Rate", elevator.encoder.getRate());
-		SmartDashboard.putNumber("Elevator Encoder Get", elevator.encoder.get());
-		SmartDashboard.putNumber("navX Yaw", Robot.navX.getYaw());
+		// SmartDashboard.putNumber("Drivetrain Left Encoder Distance", drivetrain.leftEncoder.getDistance());
+		// SmartDashboard.putNumber("Drivetrain Left Encoder Rate", drivetrain.leftEncoder.getRate());
+		// SmartDashboard.putNumber("Drivetrain Left Encoder Get", drivetrain.leftEncoder.get());
+		// SmartDashboard.putNumber("Elevator Encoder Distance", elevator.encoder.getDistance());
+		// SmartDashboard.putNumber("Elevator Encoder Rate", elevator.encoder.getRate());
+		// SmartDashboard.putNumber("Elevator Encoder Get", elevator.encoder.get());
+		// SmartDashboard.putNumber("navX Yaw", Robot.navX.getYaw());
+
+		SmartDashboard.putNumber("tx", vision.getX());
+		SmartDashboard.putNumber("Steering Adjust", vision.calcSteeringAdjust());
+		SmartDashboard.putNumber("Distance from target", vision.calcDistance());
+		SmartDashboard.putNumber("ty", vision.getY());
 	}
 
 	/**

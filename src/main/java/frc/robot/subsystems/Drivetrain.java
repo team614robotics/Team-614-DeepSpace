@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -35,6 +36,7 @@ public class Drivetrain extends Subsystem {
 
 	public SpeedController leftMotors = new SpeedControllerGroup(leftMotorA, leftMotorB);
 	public SpeedController rightMotors = new SpeedControllerGroup(rightMotorA, rightMotorB);
+	
 
 	public Drivetrain() {
 		drivetrain = new DifferentialDrive(leftMotors, rightMotors);
@@ -51,6 +53,7 @@ public class Drivetrain extends Subsystem {
 
 		turnCompanion.getController().setInputRange(-180.0f, 180.0f);
 		turnCompanion.getController().setContinuous(true);
+		
 	}
 
 	public void initDefaultCommand() {
@@ -62,7 +65,9 @@ public class Drivetrain extends Subsystem {
 	public void arcadeDrive(double moveValue, double rotateValue) {
 		drivetrain.arcadeDrive(moveValue, -rotateValue);
 	}
-
+	public void TankDrive(double left,double right){
+		drivetrain.tankDrive(left, right);
+	}
 	public void stop() {
 		drivetrain.arcadeDrive(0, 0);
 	}

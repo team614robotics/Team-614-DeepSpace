@@ -16,7 +16,7 @@ import frc.robot.commands.climber.DeployClimber;
 import frc.robot.commands.climber.RetractClimber;
 import frc.robot.commands.elevator.MoveElevator;
 import frc.robot.commands.elevator.ToggleManual;
-
+import frc.robot.commands.vision.*;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -67,6 +67,9 @@ public class OI {
 	public static final Button deliverHatch = new JoystickButton(driverController, AButton);
 	public static final Button deliverCargo = new JoystickButton(driverController, BButton);
 
+	public static final Button checkTarget = new JoystickButton(driverController, XButton);
+	public static final Button checkTarget1 = new JoystickButton(driverController, YButton);
+
 	public static final Button moveElevatorHigh = new JoystickButton(operatorController, YButton);
 	public static final Button moveElevatorMedium = new JoystickButton(operatorController, BButton);
 	public static final Button moveElevatorLow = new JoystickButton(operatorController, AButton);
@@ -86,5 +89,6 @@ public class OI {
 
 		deployClimber.whileHeld(new DeployClimber());
 		retractClimber.whileHeld(new RetractClimber());
+
 	}
 }
