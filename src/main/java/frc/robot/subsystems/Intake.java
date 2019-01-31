@@ -15,11 +15,12 @@ public class Intake extends Subsystem {
 	// here. Call these from Commands.
 
 	public Spark motor = new Spark(RobotMap.intakeMotor);
-	public DigitalInput sensor = new DigitalInput(RobotMap.photoElectric);
+	public DigitalInput sensor;
+	// = new DigitalInput(RobotMap.photoElectric);
 	public Counter counter;
 
 	public Intake() {
-		counter = new Counter(sensor);
+		// counter = new Counter(sensor);
 	}
 
 	public void initDefaultCommand() {

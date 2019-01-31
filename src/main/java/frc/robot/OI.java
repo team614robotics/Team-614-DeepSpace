@@ -80,7 +80,7 @@ public class OI {
 
 	public OI() {
 		deliverHatch.whenPressed(new DeliverHatch());
-		deliverCargo.whenPressed(new DeliverCargo());
+		deliverCargo.whileHeld(new DeliverCargo());
 
 		moveElevatorHigh.whenPressed(new MoveArm(150, 0.5));
 		moveElevatorMedium.whenPressed(new MoveArm(100, 0.5));

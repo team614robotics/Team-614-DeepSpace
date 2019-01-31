@@ -1,6 +1,7 @@
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 // 	NAVX DEGREE ORIENTATION:
@@ -10,12 +11,12 @@ import frc.robot.Robot;
 //	   -135 /|\ +135
 //		  +/-180
 
-public class RotateToAngleContinuous extends Command {
-	public RotateToAngleContinuous() {
+public class DriveToTarget extends Command {
+	public DriveToTarget() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.drivetrain);
-		// requires(Robot.vision);
+		requires(Robot.vision);
 	}
 
 	// Called just before this Command runs the first time
@@ -24,14 +25,13 @@ public class RotateToAngleContinuous extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		// if (Robot.vision.getDistance() > 50) {
-			Robot.drivetrain.arcadeDrive(0.0/* 5 */, Robot.vision.getX() * 0.01);
-		// }
+		double c = Robot.vision.getX() < 0 ? -0.35 : 0.35;
+		Robot.drivetrain.arcadeDrive(Robot.vision.getDistance() * -0.0035 - 0.35, (Robot.vision.getX() * 0.02) + c);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return false;
+		return Robot.vision.getDistance() < 40;
 	}
 
 	// Called once after isFinished returns true
