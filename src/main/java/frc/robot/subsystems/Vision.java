@@ -23,37 +23,42 @@ public class Vision extends Subsystem {
 	 *
 	 */
 	private NetworkTable table;
+	private NetworkTableEntry tx;
+	private NetworkTableEntry ty;
+	private NetworkTableEntry tv;
+	private NetworkTableEntry pipeline;
+	private NetworkTableEntry led;
+	private NetworkTableEntry cam;
 
-	private final double Kp = -0.01f;
+	private final double Kp = -0.04f;
 	private double steeringAdjust = 0.0f;
-	public final double minCommand = 0.05f;
+	public final double minCommand = 0.0f;
 	private double headingError;
 
 	private double heightOfTarget = 0.8001;
 	private double heightOfCamrea = 0.46736;
-	public double xOffset;
-	public double yOffset;
-	public double area;
-	public double LEDMode;
+	// public double xOffset;
+	// public double yOffset;
+	// public double area;
+	// public double LEDMode;
 	public double targetNumber;
 	public boolean target;
 	public double distance;
 
 	public Vision() {
 		// table = NetworkTableInstance.getDefault().getTable("limelight");
+		tx = table.getEntry("tx");
+		ty = table.getEntry("ty");
+		tv = table.getEntry("tv");
+		pipeline = table.getEntry("pipeline");
+		led = table.getEntry("ledMode");
+		cam = table.getEntry("camMode");
 	}
-	public void setTable(NetworkTable table) {
-		this.table = table;
-	}
-	public NetworkTable getTable() {
-		return NetworkTableInstance.getDefault().getTable("limelight");
-	}
-
 	public void initDefaultCommand() {
 		
 	}
 	public boolean HasTarget() {
-		targetNumber = getTable().getEntry("tv").getDouble(0);
+		targetNumber = tv.getDouble(0);
 		if (targetNumber == 0) {
 			target = false;
 		} else if (targetNumber == 1) {
@@ -64,31 +69,44 @@ public class Vision extends Subsystem {
 
 	// Horizontal Offset From Crosshair To Target (-27 degrees to 27 degrees)
 	public double getX() {
-		xOffset = getTable().getEntry("tx").getDouble(0);
-		return xOffset;
+		return tx.getDouble(0);
 	}
 
 	// Vertical Offset From Crosshair To Target (-20.5 degrees to 20.5 degrees)
 	public double getY() {
-		yOffset = getTable().getEntry("ty").getDouble(0);
-		return yOffset;
+		return ty.getDouble(0);
 	}
 
 	// Limelight LED state
 	public double getLEDMode() {
-		LEDMode = getTable().getEntry("ledMode").getDouble(1);
-		return LEDMode;
+		return led.getDouble(1);
 	}
 
 	public void setLED(double mode) {
 		if (getLEDMode() != mode) {
-			getTable().getEntry("ledMode").setDouble(mode);
+			led.setDouble(mode);
 		}
 	}
 
-	public void setHeadingError(double headingError){
-		this.headingError = headingError;
+	public double getPipeline(){
+		return pipeline.getDouble(0);
 	}
+	
+	public void setPipeline(double mode){
+		pipeline.setDouble(mode);
+	}
+	
+	public double getCamMode(){
+		return cam.getDouble(0);
+	}
+
+	public void toggleCamMode(){
+		if(getCamMode() == 0.0){
+			cam.setDouble(1);
+		}else
+			cam.setDouble(0);
+	}
+
 	public double calcSteeringAdjust(){
 		headingError = -getX();
 		if(getX() > 1.0){
@@ -98,6 +116,7 @@ public class Vision extends Subsystem {
 		}
 		return steeringAdjust;
 	}
+
 	public double calcDistance(){
 		// return (3.709)/Math.sqrt(getArea());
 		return (heightOfTarget-heightOfCamrea)/(Math.tan(Math.toRadians(getY())));
