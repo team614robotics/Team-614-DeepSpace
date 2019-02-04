@@ -21,16 +21,35 @@ public class Vision extends Subsystem {
 	private NetworkTableEntry tx;
 	private NetworkTableEntry ty;
 	private NetworkTableEntry ta;
+	private NetworkTableEntry camMode;
+	private NetworkTableEntry pipeline;
 
 	public Vision() {
 		table = NetworkTableInstance.getDefault().getTable("limelight");
 		tx = table.getEntry("tx");
 		ty = table.getEntry("ty");
 		ta = table.getEntry("ta");
+		camMode = table.getEntry("camMode");
+		pipeline = table.getEntry("pipeline");
 	}
 
 	public void initDefaultCommand() {
-		setDefaultCommand(new VisionProcessing());
+	}
+
+	public double getCamMode() {
+		return camMode.getDouble(0);
+	}
+
+	public void setCamMode(double camMode) {
+		this.camMode.setDouble(camMode);
+	}
+
+	public double getPipeline() {
+		return pipeline.getDouble(0);
+	}
+
+	public void setPipeline(double pipeline) {
+		this.pipeline.setDouble(pipeline);
 	}
 
 	public double getDistance() {
@@ -59,7 +78,7 @@ public class Vision extends Subsystem {
 
 		// LnReg() = 5.30 + -1.37 * ln(ta)
 		// distance = 5.30 + -1.37 * Math.log(getArea());
-		
+
 		// distance *= 12;
 		return distance * 12;
 	}

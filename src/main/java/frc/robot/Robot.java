@@ -91,6 +91,10 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Arm Encoder Get", arm.encoder.get());
 		SmartDashboard.putNumber("navX Yaw", Robot.navX.getYaw());
 		SmartDashboard.putNumber("Joystick Value", OI.driverController.getX(Hand.kRight));
+		SmartDashboard.putNumber("Limelight X", Robot.vision.getX());
+		SmartDashboard.putNumber("Limelight Y", Robot.vision.getY());
+		SmartDashboard.putNumber("Limelight Area", Robot.vision.getArea());
+		SmartDashboard.putNumber("Limelight Distance", Robot.vision.getDistance());
 	}
 
 	/**

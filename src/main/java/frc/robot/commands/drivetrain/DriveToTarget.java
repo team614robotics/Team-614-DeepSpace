@@ -21,12 +21,15 @@ public class DriveToTarget extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		Robot.vision.setPipeline(0);
+		Robot.vision.setCamMode(0);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		double c = Robot.vision.getX() < 0 ? -0.35 : 0.35;
-		Robot.drivetrain.arcadeDrive(Robot.vision.getDistance() * -0.0035 - 0.35, (Robot.vision.getX() * 0.02) + c);
+		//Robot.vision.getDistance() * -0.0035
+		Robot.drivetrain.arcadeDrive( - 0.35, (Robot.vision.getX() * 0.02) + c);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

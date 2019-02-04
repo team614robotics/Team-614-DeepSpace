@@ -49,6 +49,8 @@ public class RobotMap {
 	public static final int elevatorEncoderB = 3;
 	
 	// DRIVETRAIN CONSTANTS
+
+	public static final int kTimeoutMs = 10;
 	
 	public static final double DRIVETRAIN_WHEEL_DIAMETER = 6;
 	public static final double DRIVETRAIN_ENCODER_PULSES_PER_REV = 245;
