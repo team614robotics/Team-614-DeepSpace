@@ -16,8 +16,8 @@ import frc.robot.Robot;
 /**
  *
  */
-public class TankDrive extends Command {
-	public TankDrive() {
+public class ArcadeDrive extends Command {
+	public ArcadeDrive() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.drivetrain);

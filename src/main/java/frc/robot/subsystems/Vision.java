@@ -31,6 +31,8 @@ public class Vision extends Subsystem {
 		ta = table.getEntry("ta");
 		camMode = table.getEntry("camMode");
 		pipeline = table.getEntry("pipeline");
+		setPipeline(2);
+		setCamMode(0);
 	}
 
 	public void initDefaultCommand() {
@@ -100,8 +102,12 @@ public class Vision extends Subsystem {
 	}
 
 	public void stop() {
+		setPipeline(2);
+		setCamMode(0);
 	}
 
 	public void reset() {
+		setPipeline(2);
+		setCamMode(0);
 	}
 }

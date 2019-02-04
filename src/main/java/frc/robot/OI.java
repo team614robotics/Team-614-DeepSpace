@@ -79,7 +79,7 @@ public class OI {
 	public static final Button toggleGrabber = new JoystickButton(driverController, XButton);
 
 	public OI() {
-		deliverHatch.whenPressed(new DeliverHatch());
+		deliverHatch.whileHeld(new DeliverHatch());
 		deliverCargo.whileHeld(new DeliverCargo());
 
 		moveElevatorHigh.whenPressed(new MoveArm(150, 0.5));

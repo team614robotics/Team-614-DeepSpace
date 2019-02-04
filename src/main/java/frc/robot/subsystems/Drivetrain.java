@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.VictorSP;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.commands.drivetrain.TankDrive;
+import frc.robot.commands.drivetrain.ArcadeDrive;
 
 /**
  *
@@ -53,14 +53,14 @@ public class Drivetrain extends Subsystem {
 
 		leftEncoder.setDistancePerPulse(RobotMap.DRIVETRAIN_DISTANCE_PER_PULSE);
 
-		// distanceCompanion = new PIDCompanion(RobotMap.drivetrainRotationP, RobotMap.drivetrainRotationI,
-		// 		RobotMap.drivetrainRotationD, RobotMap.drivetrainRotationF, leftEncoder, "Drivetrain", "Distance");
+		distanceCompanion = new PIDCompanion(RobotMap.drivetrainRotationP, RobotMap.drivetrainRotationI,
+				RobotMap.drivetrainRotationD, RobotMap.drivetrainRotationF, leftEncoder, "Drivetrain", "Distance");
 
-		// turnCompanion = new PIDCompanion(RobotMap.drivetrainRotationP, RobotMap.drivetrainRotationI,
-		// 		RobotMap.drivetrainRotationD, RobotMap.drivetrainRotationF, Robot.navX, "Drivetrain", "Turn");
+		turnCompanion = new PIDCompanion(RobotMap.drivetrainRotationP, RobotMap.drivetrainRotationI,
+				RobotMap.drivetrainRotationD, RobotMap.drivetrainRotationF, Robot.navX, "Drivetrain", "Turn");
 
-		// turnCompanion.getController().setInputRange(-180.0f, 180.0f);
-		// turnCompanion.getController().setContinuous(true);
+		turnCompanion.getController().setInputRange(-180.0f, 180.0f);
+		turnCompanion.getController().setContinuous(true);
 
 		leftMotorA.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.kTimeoutMs);
 		leftMotorA.setSensorPhase(false);
@@ -88,7 +88,7 @@ public class Drivetrain extends Subsystem {
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
-		setDefaultCommand(new TankDrive());
+		setDefaultCommand(new ArcadeDrive());
 	}
 
 	public void arcadeDrive(double moveValue, double rotateValue) {

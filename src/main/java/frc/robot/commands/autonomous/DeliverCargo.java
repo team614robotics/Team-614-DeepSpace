@@ -7,8 +7,6 @@ import frc.robot.commands.drivetrain.RotateToAngle;
 
 public class DeliverCargo extends CommandGroup {
     public DeliverCargo() {
-		// requires(Robot.vision);
-		// addSequential(new RotateToAngle(Robot.vision.getX(), false));
-		addSequential(new DriveToTarget());
+		addSequential(new DriveToTarget(1, 0));
 	}
 }
