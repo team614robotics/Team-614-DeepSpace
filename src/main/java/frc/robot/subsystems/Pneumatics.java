@@ -15,11 +15,13 @@ public class Pneumatics extends Subsystem {
 
 	public Compressor compressor;
 	public DoubleSolenoid grabberPiston;
+	public DoubleSolenoid climberPiston;
 
 	public Pneumatics() {
 		compressor = new Compressor(RobotMap.compressor);
 		grabberPiston = new DoubleSolenoid(RobotMap.grabberPistonA, RobotMap.grabberPistonB);
 		grabberPiston.set(RobotMap.PistonIn);
+		climberPiston = new DoubleSolenoid(RobotMap.climberPistonA, RobotMap.climberPistonB);
 	}
 
 	public void initDefaultCommand() {
@@ -34,5 +36,13 @@ public class Pneumatics extends Subsystem {
 
 	public void setGrabberState(DoubleSolenoid.Value state) {
 		grabberPiston.set(state);
+	}
+
+	public DoubleSolenoid.Value getClimberState() {
+		return climberPiston.get();
+	}
+
+	public void setClimberState(DoubleSolenoid.Value state) {
+		climberPiston.set(state);
 	}
 }

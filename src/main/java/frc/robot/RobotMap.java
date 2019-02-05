@@ -38,8 +38,6 @@ public class RobotMap {
 
 	public static final int intakeMotor = 7;
 
-	public static final int photoElectric = 0;
-
 	// ENCODERS
 	
 	public static final int drivetrainEncoderA = 0;
@@ -89,6 +87,9 @@ public class RobotMap {
 
 	public static final int grabberPistonA = 0;
 	public static final int grabberPistonB = 1;
+
+	public static final int climberPistonA = 2;
+	public static final int climberPistonB = 3;
 	
 	public static final DoubleSolenoid.Value PistonOut = DoubleSolenoid.Value.kForward;
 	public static final DoubleSolenoid.Value PistonIn = DoubleSolenoid.Value.kReverse;

@@ -15,11 +15,13 @@ public class ToggleGrabber extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		if (Robot.pneumatics.getGrabberState().equals(RobotMap.PistonIn)) {
-			Robot.pneumatics.setGrabberState(RobotMap.PistonOut);
-		} else {
-			Robot.pneumatics.setGrabberState(RobotMap.PistonIn);
-		}
+		Robot.pneumatics.setClimberState(Robot.pneumatics.getClimberState().equals(RobotMap.PistonIn) ? RobotMap.PistonOut : RobotMap.PistonIn);
+		
+		// if (Robot.pneumatics.getClimberState().equals(RobotMap.PistonIn)) {
+		// 	Robot.pneumatics.setClimberState(RobotMap.PistonOut);
+		// } else {
+		// 	Robot.pneumatics.setClimberState(RobotMap.PistonIn);
+		// }
 	}
 
 	// Called repeatedly when this Command is scheduled to run

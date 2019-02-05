@@ -1,42 +1,42 @@
-package frc.robot.commands.intake;
+package frc.robot.commands.climber;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
-public class RevOutake extends Command {
-	public RevOutake() {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-		requires(Robot.intake);
+public class ToggleClimber extends Command {
+	public ToggleClimber() {
+		requires(Robot.pneumatics);
 	}
 
+	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.intake.set(0);
+		if (Robot.pneumatics.getGrabberState().equals(RobotMap.PistonIn)) {
+			Robot.pneumatics.setGrabberState(RobotMap.PistonOut);
+		} else {
+			Robot.pneumatics.setGrabberState(RobotMap.PistonIn);
+		}
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.intake.set(-SmartDashboard.getNumber("Outake Speed", 0));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return Robot.pneumatics.getGrabberState().equals(RobotMap.PistonOut);
+		return true;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.intake.set(0);
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		Robot.intake.set(0);
 	}
 }

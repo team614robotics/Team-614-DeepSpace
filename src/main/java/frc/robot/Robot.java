@@ -70,6 +70,9 @@ public class Robot extends TimedRobot {
 		// chooser.setDefaultOption("Default Auto", new Command());
 		// chooser.addOption("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Autonomous", chooser);
+		
+		SmartDashboard.putNumber("Intake Speed", 0);
+		SmartDashboard.putNumber("Outake Speed", 0);
 	}
 
 	/**
@@ -86,11 +89,15 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Drivetrain Left Encoder Distance", drivetrain.leftEncoder.getDistance());
 		SmartDashboard.putNumber("Drivetrain Left Encoder Rate", drivetrain.leftEncoder.getRate());
 		SmartDashboard.putNumber("Drivetrain Left Encoder Get", drivetrain.leftEncoder.get());
+
 		SmartDashboard.putNumber("Arm Encoder Distance", arm.encoder.getDistance());
 		SmartDashboard.putNumber("Arm Encoder Rate", arm.encoder.getRate());
 		SmartDashboard.putNumber("Arm Encoder Get", arm.encoder.get());
+
 		SmartDashboard.putNumber("navX Yaw", Robot.navX.getYaw());
+
 		SmartDashboard.putNumber("Joystick Value", OI.driverController.getX(Hand.kRight));
+
 		SmartDashboard.putNumber("Limelight X", Robot.vision.getX());
 		SmartDashboard.putNumber("Limelight Y", Robot.vision.getY());
 		SmartDashboard.putNumber("Limelight Area", Robot.vision.getArea());
