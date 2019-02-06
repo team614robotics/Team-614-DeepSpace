@@ -1,17 +1,20 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import frc.robot.RobotMap;
 
 public class Climber extends Subsystem {
-	private Spark motorA;
-	private Spark motorB;
+	private CANSparkMax motorA;
+	private CANSparkMax motorB;
 
 	public Climber() {
-		motorA = new Spark(RobotMap.climberMotorA);
-		motorB = new Spark(RobotMap.climberMotorB);
+		motorA = new CANSparkMax(RobotMap.climberMotorA, MotorType.kBrushless);
+		motorB = new CANSparkMax(RobotMap.climberMotorB, MotorType.kBrushless);
 	}
 
 	public void set(double speed) {

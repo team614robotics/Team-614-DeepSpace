@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -8,13 +11,17 @@ import frc.robot.RobotMap;
 import frc.robot.commands.arm.ManualArm;
 
 public class Arm extends Subsystem {
-	private Spark motor;
+	private CANSparkMax motorA;
+	private CANSparkMax motorB;
+
 	public Encoder encoder;
 	public PIDCompanion companion;
+
 	private boolean manual = true;
 
 	public Arm() {
-		motor = new Spark(RobotMap.elevatorMotor);
+		motorA = new CANSparkMax(RobotMap.elevatorMotorA, MotorType.kBrushed);
+		motorB = new CANSparkMax(RobotMap.elevatorMotorB, MotorType.kBrushed);
 		encoder = new Encoder(RobotMap.elevatorEncoderA, RobotMap.elevatorEncoderB, false, Encoder.EncodingType.k4X);
 
 		encoder.setDistancePerPulse(RobotMap.DRIVETRAIN_DISTANCE_PER_PULSE);
@@ -38,7 +45,8 @@ public class Arm extends Subsystem {
 	}
 
 	public void set(double speed) {
-		motor.set(-speed);
+		motorA.set(speed);
+		motorB.set(speed);
 	}
 
 	public void initDefaultCommand() {
