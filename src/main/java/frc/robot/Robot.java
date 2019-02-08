@@ -164,7 +164,7 @@ public class Robot extends TimedRobot {
 		// SmartDashboard.putNumber("navX Yaw", Robot.navX.getYaw());
 
 		SmartDashboard.putNumber("tx", vision.getX());
-		SmartDashboard.putNumber("Steering Adjust", vision.calcSteeringAdjust());
+		// SmartDashboard.putNumber("Steering Adjust", vision.calcSteeringAdjust());
 		SmartDashboard.putNumber("Distance from target", vision.calcDistance());
 		SmartDashboard.putNumber("ty", vision.getY());
 	}

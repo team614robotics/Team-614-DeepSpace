@@ -79,8 +79,8 @@ public class OI {
 	public static final Button retractClimber = new JoystickButton(operatorController, LeftBumper);
 
 	public OI() {
-		deliverHatch.whenPressed(new DeliverHatch());
-		deliverCargo.whenPressed(new DeliverCargo());
+		deliverHatch.whileHeld(new DeliverHatch());
+		deliverCargo.whileHeld(new DeliverCargo());
 
 		moveElevatorHigh.whenPressed(new MoveElevator(150, 0.5));
 		moveElevatorMedium.whenPressed(new MoveElevator(100, 0.5));

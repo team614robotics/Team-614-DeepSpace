@@ -10,38 +10,51 @@ import frc.robot.Robot;
 //	   -135 /|\ +135
 //		  +/-180
 
-public class RotateToAngleContinuous extends Command {
-	public RotateToAngleContinuous() {
+public class DriveToTarget extends Command {
+	int mode;
+	int pipeline;
+	public DriveToTarget(int pipeline, int mode) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.drivetrain);
+
+		requires(Robot.vision);
+		
+		this.mode = mode;
+		this.pipeline = pipeline;
 		// requires(Robot.vision);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		Robot.vision.setCamMode(mode);
+		Robot.vision.setPipeline(pipeline);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		// if (Robot.vision.getDistance() > 50) {
-			Robot.drivetrain.arcadeDrive(0.0/* 5 */, Robot.vision.getX() * 0.1);
+			double c = Robot.vision.getX() < 0 ? -0.35 : 0.35;
+			Robot.drivetrain.arcadeDrive(0, (Robot.vision.getX() * 0.02) + c);
+			// Robot.vision.getDistance() * -0.0035 - 0.35
 		// }
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return false;
+		return Robot.vision.getDistance() < 40;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
 		Robot.drivetrain.stop();
+		Robot.vision.stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
 		Robot.drivetrain.stop();
+		Robot.vision.stop();
 	}
 }
