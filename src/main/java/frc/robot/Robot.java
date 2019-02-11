@@ -9,6 +9,9 @@ package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.cscore.AxisCamera;
+import edu.wpi.cscore.VideoSource;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -39,7 +42,8 @@ public class Robot extends TimedRobot {
 	public static Drivetrain drivetrain;
 	public static Pneumatics pneumatics;
 	public static Arm arm;
-	public static Vision vision;
+	public static Vision upperLimelight;
+	public static Vision lowerLimelight;
 	public static Climber climber;
 	public static Intake intake;
 	public static OI oi;
@@ -62,7 +66,10 @@ public class Robot extends TimedRobot {
 		drivetrain = new Drivetrain();
 		pneumatics = new Pneumatics();
 		arm = new Arm();
-		vision = new Vision();
+		upperLimelight = new Vision("limelight-upper", "10.6.14.75:5800");
+		Vision.upper = true;
+		upperLimelight.openStream();
+		lowerLimelight = new Vision("limelight-lower", "10.6.14.11:5800");
 		climber = new Climber();
 		intake = new Intake();
 		oi = new OI();
@@ -97,11 +104,12 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("navX Yaw", Robot.navX.getYaw());
 
 		SmartDashboard.putNumber("Joystick Value", OI.driverController.getX(Hand.kRight));
+		SmartDashboard.putBoolean("Arm Up", Robot.arm.isUp());
 
-		SmartDashboard.putNumber("Limelight X", Robot.vision.getX());
-		SmartDashboard.putNumber("Limelight Y", Robot.vision.getY());
-		SmartDashboard.putNumber("Limelight Area", Robot.vision.getArea());
-		SmartDashboard.putNumber("Limelight Distance", Robot.vision.getDistance());
+		// SmartDashboard.putNumber("Limelight X", Robot.vision.getX());
+		// SmartDashboard.putNumber("Limelight Y", Robot.vision.getY());
+		// SmartDashboard.putNumber("Limelight Area", Robot.vision.getArea());
+		// SmartDashboard.putNumber("Limelight Distance", Robot.vision.getDistance());
 	}
 
 	/**

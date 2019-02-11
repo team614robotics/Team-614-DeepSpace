@@ -32,13 +32,13 @@ public class RobotMap {
 	public static final int rightMotorA = 2;
 	public static final int rightMotorB = 3;
 
-	public static final int elevatorMotorA = 4;
-	public static final int elevatorMotorB = 5;
+	public static final int armMotorA = 5;
+	public static final int armMotorB = 6;
 
-	public static final int climberMotorA = 6;
-	public static final int climberMotorB = 7;
+	public static final int climberMotorA = 7;
+	public static final int climberMotorB = 8;
 	
-	public static final int intakeMotor = 8;
+	public static final int intakeMotor = 4;
 
 	// ENCODERS
 	

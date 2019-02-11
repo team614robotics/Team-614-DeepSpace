@@ -8,10 +8,11 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.cscore.AxisCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import frc.robot.commands.vision.VisionProcessing;
 
 /**
  *
@@ -24,8 +25,14 @@ public class Vision extends Subsystem {
 	private NetworkTableEntry camMode;
 	private NetworkTableEntry pipeline;
 
-	public Vision() {
-		table = NetworkTableInstance.getDefault().getTable("limelight");
+	private AxisCamera stream;
+	private String name;
+	private String ip;
+
+	public static boolean upper;
+
+	public Vision(String name, String ip) {
+		table = NetworkTableInstance.getDefault().getTable(name);
 		tx = table.getEntry("tx");
 		ty = table.getEntry("ty");
 		ta = table.getEntry("ta");
@@ -33,6 +40,7 @@ public class Vision extends Subsystem {
 		pipeline = table.getEntry("pipeline");
 		setPipeline(2);
 		setCamMode(0);
+		// stream = CameraServer.getInstance().addAxisCamera(name + "-stream", ip);
 	}
 
 	public void initDefaultCommand() {
@@ -40,6 +48,14 @@ public class Vision extends Subsystem {
 
 	public double getCamMode() {
 		return camMode.getDouble(0);
+	}
+
+	public void closeStream() {
+		stream.close();
+	}
+
+	public void openStream() {
+		stream = CameraServer.getInstance().addAxisCamera(name + "-stream", ip);
 	}
 
 	public void setCamMode(double camMode) {

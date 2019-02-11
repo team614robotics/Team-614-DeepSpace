@@ -37,16 +37,23 @@ public class Drivetrain extends Subsystem {
 
 	public Encoder leftEncoder;
 
-	public WPI_TalonSRX leftMotorA = new WPI_TalonSRX(RobotMap.leftMotorA);
-	public WPI_VictorSPX leftMotorB = new WPI_VictorSPX(RobotMap.leftMotorB);
-	public WPI_TalonSRX rightMotorA = new WPI_TalonSRX(RobotMap.rightMotorA);
-	public WPI_VictorSPX rightMotorB = new WPI_VictorSPX(RobotMap.rightMotorB);
+	// public WPI_TalonSRX leftMotorA = new WPI_TalonSRX(RobotMap.leftMotorA);
+	// public WPI_VictorSPX leftMotorB = new WPI_VictorSPX(RobotMap.leftMotorB);
+	// public WPI_TalonSRX rightMotorA = new WPI_TalonSRX(RobotMap.rightMotorA);
+	// public WPI_VictorSPX rightMotorB = new WPI_VictorSPX(RobotMap.rightMotorB);
 
-	// public SpeedController leftMotors = new SpeedControllerGroup(leftMotorA, leftMotorB);
-	// public SpeedController rightMotors = new SpeedControllerGroup(rightMotorA, rightMotorB);
+	
+	public VictorSP leftMotorA = new VictorSP(RobotMap.leftMotorA);
+	public VictorSP leftMotorB = new VictorSP(RobotMap.leftMotorB);
+	public VictorSP rightMotorA = new VictorSP(RobotMap.rightMotorA);
+	public VictorSP rightMotorB = new VictorSP(RobotMap.rightMotorB);
+
+	public SpeedController leftMotors = new SpeedControllerGroup(leftMotorA, leftMotorB);
+	public SpeedController rightMotors = new SpeedControllerGroup(rightMotorA, rightMotorB);
 
 	public Drivetrain() {
-		drivetrain = new DifferentialDrive(leftMotorA, rightMotorA);
+		// drivetrain = new DifferentialDrive(leftMotorA, rightMotorA);
+		drivetrain = new DifferentialDrive(leftMotors, rightMotors);
 
 		leftEncoder = new Encoder(RobotMap.drivetrainEncoderA, RobotMap.drivetrainEncoderB, false,
 				Encoder.EncodingType.k4X);
@@ -62,27 +69,27 @@ public class Drivetrain extends Subsystem {
 		turnCompanion.getController().setInputRange(-180.0f, 180.0f);
 		turnCompanion.getController().setContinuous(true);
 
-		leftMotorA.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.kTimeoutMs);
-		leftMotorA.setSensorPhase(false);
+		// leftMotorA.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.kTimeoutMs);
+		// leftMotorA.setSensorPhase(false);
 
-		leftMotorA.configNominalOutputForward(0, RobotMap.kTimeoutMs);
-		leftMotorA.configNominalOutputReverse(0, RobotMap.kTimeoutMs);
-		leftMotorA.configPeakOutputForward(1, RobotMap.kTimeoutMs);
-		leftMotorA.configPeakOutputReverse(-1, RobotMap.kTimeoutMs);
+		// leftMotorA.configNominalOutputForward(0, RobotMap.kTimeoutMs);
+		// leftMotorA.configNominalOutputReverse(0, RobotMap.kTimeoutMs);
+		// leftMotorA.configPeakOutputForward(1, RobotMap.kTimeoutMs);
+		// leftMotorA.configPeakOutputReverse(-1, RobotMap.kTimeoutMs);
 
-		leftMotorA.set(ControlMode.PercentOutput, 0);
-		leftMotorB.follow(leftMotorA);
+		// leftMotorA.set(ControlMode.PercentOutput, 0);
+		// leftMotorB.follow(leftMotorA);
 
-		rightMotorA.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.kTimeoutMs);
-		rightMotorA.setSensorPhase(false);
+		// rightMotorA.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.kTimeoutMs);
+		// rightMotorA.setSensorPhase(false);
 
-		rightMotorA.configNominalOutputForward(0, RobotMap.kTimeoutMs);
-		rightMotorA.configNominalOutputReverse(0, RobotMap.kTimeoutMs);
-		rightMotorA.configPeakOutputForward(1, RobotMap.kTimeoutMs);
-		rightMotorA.configPeakOutputReverse(-1, RobotMap.kTimeoutMs);
+		// rightMotorA.configNominalOutputForward(0, RobotMap.kTimeoutMs);
+		// rightMotorA.configNominalOutputReverse(0, RobotMap.kTimeoutMs);
+		// rightMotorA.configPeakOutputForward(1, RobotMap.kTimeoutMs);
+		// rightMotorA.configPeakOutputReverse(-1, RobotMap.kTimeoutMs);
 
-		rightMotorA.set(ControlMode.PercentOutput, 0);
-		rightMotorB.follow(rightMotorA);
+		// rightMotorA.set(ControlMode.PercentOutput, 0);
+		// rightMotorB.follow(rightMotorA);
 	}
 
 	public void initDefaultCommand() {

@@ -18,6 +18,7 @@ import frc.robot.commands.climber.ToggleClimber;
 import frc.robot.commands.arm.MoveArm;
 import frc.robot.commands.arm.ToggleManual;
 import frc.robot.commands.grabber.ToggleGrabber;
+import frc.robot.commands.vision.ToggleCamera;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -80,7 +81,11 @@ public class OI {
 	public static final Button toggleGrabber = new JoystickButton(driverController, XButton);
 	public static final Button toggleClimber = new JoystickButton(operatorController, YButton);
 
+	public static final Button toggleCamera = new JoystickButton(driverController, LeftBumper);
+
 	public OI() {
+		toggleCamera.whenPressed(new ToggleCamera());
+
 		deliverHatch.whileHeld(new DeliverHatch());
 		deliverCargo.whileHeld(new DeliverCargo());
 
