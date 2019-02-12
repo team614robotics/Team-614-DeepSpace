@@ -42,8 +42,7 @@ public class Robot extends TimedRobot {
 	public static Drivetrain drivetrain;
 	public static Pneumatics pneumatics;
 	public static Arm arm;
-	public static Vision upperLimelight;
-	public static Vision lowerLimelight;
+	public static Vision vision;
 	public static Climber climber;
 	public static Intake intake;
 	public static OI oi;
@@ -66,10 +65,7 @@ public class Robot extends TimedRobot {
 		drivetrain = new Drivetrain();
 		pneumatics = new Pneumatics();
 		arm = new Arm();
-		upperLimelight = new Vision("limelight-upper", "10.6.14.75:5800");
-		Vision.upper = true;
-		upperLimelight.openStream();
-		lowerLimelight = new Vision("limelight-lower", "10.6.14.11:5800");
+		vision = new Vision("limelight-lower");
 		climber = new Climber();
 		intake = new Intake();
 		oi = new OI();
@@ -80,6 +76,8 @@ public class Robot extends TimedRobot {
 		
 		SmartDashboard.putNumber("Intake Speed", 0);
 		SmartDashboard.putNumber("Outake Speed", 0);
+
+		
 	}
 
 	/**
@@ -109,8 +107,10 @@ public class Robot extends TimedRobot {
 		// SmartDashboard.putNumber("Limelight X", Robot.vision.getX());
 		// SmartDashboard.putNumber("Limelight Y", Robot.vision.getY());
 		// SmartDashboard.putNumber("Limelight Area", Robot.vision.getArea());
-		// SmartDashboard.putNumber("Limelight Distance", Robot.vision.getDistance());
+		SmartDashboard.putNumber("Limelight Distance", Robot.vision.getDistance());
+		SmartDashboard.putNumber("Operator Controller", OI.operatorController.getX(Hand.kLeft));
 	}
+
 
 	/**
 	 * This function is called once each time the robot enters Disabled mode. You

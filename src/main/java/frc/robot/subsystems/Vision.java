@@ -25,13 +25,9 @@ public class Vision extends Subsystem {
 	private NetworkTableEntry camMode;
 	private NetworkTableEntry pipeline;
 
-	private AxisCamera stream;
-	private String name;
-	private String ip;
-
 	public static boolean upper;
 
-	public Vision(String name, String ip) {
+	public Vision(String name) {
 		table = NetworkTableInstance.getDefault().getTable(name);
 		tx = table.getEntry("tx");
 		ty = table.getEntry("ty");
@@ -40,7 +36,6 @@ public class Vision extends Subsystem {
 		pipeline = table.getEntry("pipeline");
 		setPipeline(2);
 		setCamMode(0);
-		// stream = CameraServer.getInstance().addAxisCamera(name + "-stream", ip);
 	}
 
 	public void initDefaultCommand() {
@@ -48,14 +43,6 @@ public class Vision extends Subsystem {
 
 	public double getCamMode() {
 		return camMode.getDouble(0);
-	}
-
-	public void closeStream() {
-		stream.close();
-	}
-
-	public void openStream() {
-		stream = CameraServer.getInstance().addAxisCamera(name + "-stream", ip);
 	}
 
 	public void setCamMode(double camMode) {
