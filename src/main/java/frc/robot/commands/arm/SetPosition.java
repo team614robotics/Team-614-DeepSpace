@@ -5,22 +5,26 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.drivetrain;
+package frc.robot.commands.arm;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
-public class TankDrive extends Command {
-	public TankDrive() {
+public class SetPosition extends Command {
+	public SetPosition() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
-		requires(Robot.drivetrain);
+		requires(Robot.arm);
 	}
 
 	// Called just before this Command runs the first time
@@ -29,7 +33,7 @@ public class TankDrive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.drivetrain.arcadeDrive(OI.driverController.getY(Hand.kLeft), OI.driverController.getX(Hand.kRight));
+        Robot.arm.hawkTalonA.set(ControlMode.Position, SmartDashboard.getNumber("Angle of Arm", 0) * RobotMap.encTicksPerDeg);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

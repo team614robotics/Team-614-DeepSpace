@@ -1,34 +1,35 @@
-package frc.robot.commands.umbrella;
+package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj.command.Command;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 /**
  *
  */
-public class ToggleUmbrella extends Command {
-	public ToggleUmbrella() {
-		requires(Robot.pneumatics);
+public class SetSpeedSpooler extends Command {
+	public SetSpeedSpooler() {
+		requires(Robot.arm);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		if (Robot.pneumatics.getIntakeState().equals(RobotMap.PistonIn)) {
-			Robot.pneumatics.setIntakeState(RobotMap.PistonOut);
-		} else {
-			Robot.pneumatics.setIntakeState(RobotMap.PistonIn);
-		}
+		// Robot.arm.sparkMaxB.setInverted(true);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+	//  SmartDashboard.putNumber("Left Trigger",OI.operatorController.getTriggerAxis(Hand.kLeft));
+	//  SmartDashboard.putNumber("Right Trigger",OI.operatorController.getTriggerAxis(Hand.kRight));
+	 Robot.climber.spool(SmartDashboard.getNumber("Spool Speed", 0));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return true;
+		return false;
 	}
 
 	// Called once after isFinished returns true
