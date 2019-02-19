@@ -34,8 +34,8 @@ public class Pneumatics extends Subsystem {
 		compressor = new Compressor(RobotMap.compressor);
 		climberPistonA = new DoubleSolenoid(RobotMap.solenoidPort1A, RobotMap.solenoidPort2A);
 		climberPistonB = new DoubleSolenoid(RobotMap.solenoidPort1B, RobotMap.solenoidPort2B);
-		bikebrakePiston = new DoubleSolenoid(RobotMap.solenoidPort5, RobotMap.solenoidPort6);
-		umbrellaPiston = new DoubleSolenoid(RobotMap.solenoidPort3, RobotMap.solenoidPort4);
+		bikebrakePiston = new DoubleSolenoid(4, 5);
+		umbrellaPiston = new DoubleSolenoid(RobotMap.solenoidPort5, RobotMap.solenoidPort6);
 	}
 
 	public void initDefaultCommand() {

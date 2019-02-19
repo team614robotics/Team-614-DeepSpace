@@ -26,6 +26,9 @@ import frc.lib.CreateNewPath;
 import frc.robot.commands.climber.*;
 import frc.robot.commands.arm.*;
 import frc.robot.commands.intake.*;
+import frc.robot.commands.drivetrain.DriveToHatchPanel;
+import frc.robot.commands.drivetrain.DriveForADistance;
+import frc.robot.commands.drivetrain.DriveToTarget;
 /**
  * 
  * This class is the glue that binds the controls on the physical operator
@@ -105,12 +108,20 @@ public class OI {
 	public static final Button clamper = new JoystickButton(operatorController, YButton);
 	public static final Button setSpeedSpooler = new JoystickButton(operatorController, BButton);
 	
-	public static final Button armBikeBrake = new JoystickButton(operatorController, XButton);
-	public static final Button setPosition = new JoystickButton(operatorController, AButton);
+	// public static final Button armBikeBrake = new JoystickButton(driverController, XButton);
+	public static final Button setPosition = new JoystickButton(driverController, AButton);
+
 
 	public static final Button revOutake = new JoystickButton(driverController, BButton);
-	public static final Button revIntake = new JoystickButton(driverController, AButton);
+	public static final Button revIntake = new JoystickButton(driverController, RightBumper);
 	public static final Button toggleUmbrella = new JoystickButton(driverController, LeftBumper);
+
+	// public static final Button driveToHatchPanel = new JoystickButton(driverController, YButton);
+	public static final Button unlockBikebrake = new JoystickButton(driverController, YButton);
+
+	public static final Button lockBikebrake = new JoystickButton(driverController, XButton);
+
+
 
 	public OI() {
 		// Unspool.whileHeld(new Unspool());
@@ -118,11 +129,18 @@ public class OI {
 		clamper.whenPressed(new Clamper());
 		setSpeedSpooler.whileHeld(new SetSpeedSpooler());
 		
-		armBikeBrake.whenPressed(new Bikebrake());
-		setPosition.whileHeld(new SetPosition());
+		// armBikeBrake.whenPressed(new Bikebrake());
+		setPosition.whileHeld(new DriveToTarget(2, 0));
 		
 		revOutake.whileHeld(new RevOutake());
 		revIntake.whileHeld(new RevIntake());
-		toggleUmbrella.whileHeld(new ToggleUmbrella());
+		toggleUmbrella.whenPressed(new ToggleUmbrella());
+
+		// driveToHatchPanel.whileHeld(new DriveToHatchPanel());
+
+		unlockBikebrake.whenPressed(new UnlockBikebrake());
+		lockBikebrake.whenPressed(new LockBikebrake());
+
+
 	}
 }

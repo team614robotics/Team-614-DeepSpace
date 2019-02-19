@@ -19,8 +19,13 @@ import com.ctre.phoenix.motorcontrol.StickyFaults;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 
-public class Drivetrain extends Subsystem {
+public class Drivetrain extends Subsystem implements PIDOutput{
+	PIDController turnController;
+	private double rotateToAngle;
+	public boolean turnPID;
 	public static final int timeout = 10;
 
 	public HawkTalons leftMotor1  = new HawkTalons(RobotMap.leftMotorA);
@@ -34,6 +39,7 @@ public class Drivetrain extends Subsystem {
     public static final double unitsPerInch = 1000; //No
 
 	public Drivetrain() {
+		turnPID = false;
 		leftMotor1.setInverted(true);
 		rightMotor1.setInverted(true);
 		leftMotor2.setInverted(true);
@@ -42,14 +48,58 @@ public class Drivetrain extends Subsystem {
 		this.configTalons();
 		leftMotor2.follow(leftMotor1);
 		rightMotor2.follow(rightMotor1);
-
+		turnController = new PIDController(RobotMap.turnP, RobotMap.turnI,
+				RobotMap.turnD, RobotMap.turnF, Robot.navX, this);
+		turnController.setInputRange(-180, 180);
+		turnController.setOutputRange(-1, 1);
+		turnController.setAbsoluteTolerance(0.1f);
+		turnController.setContinuous(true);
 		// leftMotor1.setInverted(true);
 		// leftMotor2.setInverted(true);
 	}
 
+	public void setUsingTurnPID(boolean set) {
+		turnPID = set;
+		if (turnPID) {
+			turnController.enable();
+		} else {
+			turnController.disable();
+		}
+	}
+
+	// public void setUsingDistancePID(boolean set) {
+	// 	Robot.drivetrainCompanion.setUsingDistancePID(set);
+	// }
+
+	public boolean getUsingTurnPID() {
+		return turnPID;
+	}
+
+	// public boolean getUsingDistancePID() {
+	// 	return Robot.drivetrainCompanion.getUsingDistancePID();
+	// }
+
+	public double getPIDRotateRate() {
+		return rotateToAngle;
+	}
+
+	// public double getPIDSpeed() {
+	// 	return Robot.drivetrainCompanion.getPIDSpeed();
+	// }
+
+	public PIDController getTurnController() {
+		return turnController;
+	}
+
+	public void pidWrite(double output) {
+		if (turnPID) {
+			rotateToAngle = output;
+		}
+	}
 	@Override
 	public void initDefaultCommand() {
 		setDefaultCommand(new ArcadeDrive());
+		
 	}
 
 	public void arcadeDrive(double speed, double rotate) {
@@ -90,12 +140,15 @@ public class Drivetrain extends Subsystem {
 		rightMotor1.configPeakOutputForward(1, timeout);
 		rightMotor1.configPeakOutputReverse(-1, timeout);
         // --
-		rightMotor1.setConfig(new SRXPID(0.08, 0.014, 0.0, 6.0), 0);
-		rightMotor1.setConfig(new SRXPID(0.0, 4, 0.0, 6.0), 1);
+		rightMotor1.setConfig(new SRXPID(RobotMap.distF, RobotMap.distP, RobotMap.distI, RobotMap.distD), 0); //Tune later on
+		rightMotor1.setConfig(new SRXPID(RobotMap.turnF, RobotMap.turnP, RobotMap.turnI, RobotMap.turnD), 1);
 		rightMotor1.configMotionProfileTrajectoryPeriod(10, timeout); 
-	    rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, timeout);
-		rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, timeout);
-
+		rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 20, timeout);
+		rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20, timeout);
+		rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, 20, timeout);
+		rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_10_Targets, 10, timeout);
+		rightMotor1.configMotionCruiseVelocity(100, timeout);
+		rightMotor1.configMotionAcceleration(100, timeout);
 
 		// LEFT MOTOR CONFIG
 		leftMotor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
@@ -106,12 +159,19 @@ public class Drivetrain extends Subsystem {
 		leftMotor1.configPeakOutputForward(1, timeout);
 		leftMotor1.configPeakOutputReverse(-1, timeout);
         // --
-		leftMotor1.setConfig(new SRXPID(0.08, 0.014, 0.0, 6.0), 0); //Tune later on
-		leftMotor1.setConfig(new SRXPID(0.0, 4, 0.0, 6.0), 1);
+		leftMotor1.setConfig(new SRXPID(RobotMap.distF, RobotMap.distP, RobotMap.distI, RobotMap.distD), 0); //Tune later on
+		leftMotor1.setConfig(new SRXPID(RobotMap.turnF, RobotMap.turnP, RobotMap.turnI, RobotMap.turnD), 1);
+		leftMotor1.config_IntegralZone(0, RobotMap.distIZone);
+		leftMotor1.config_IntegralZone(1, RobotMap.turnIZone);
+		leftMotor1.configClosedLoopPeakOutput(0, RobotMap.distPeakOutput);
+		leftMotor1.configClosedLoopPeakOutput(1, RobotMap.turnPeakOutput);
 		leftMotor1.configMotionProfileTrajectoryPeriod(10, timeout); 
 		leftMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, timeout);
 		leftMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, timeout);
+		rightMotor1.configAuxPIDPolarity(false, timeout);
 	}
+
+
 
 	public double getDistanceMoved() { //Note: right is negative as forward is the negative direction on the right side.
 		return (this.leftMotor1.getSelectedSensorPosition(0) + -this.rightMotor1.getSelectedSensorPosition(0)) / 2.0; //Fix maybe?

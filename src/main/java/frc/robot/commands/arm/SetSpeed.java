@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -30,7 +31,17 @@ public class SetSpeed extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.arm.set(OI.operatorController.getY(Hand.kRight), SmartDashboard.getNumber("Feed Forward", 0));
+		// if(OI.operatorController.getY(Hand.kRight) == 0) {
+		// 	Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonIn);
+		// }
+		// else {
+		//     Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonOut);
+		// }
+		if(-OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft) > 0) {
+			Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonIn);
+		}
+		Robot.arm.set(-OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft), 0);
+		
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

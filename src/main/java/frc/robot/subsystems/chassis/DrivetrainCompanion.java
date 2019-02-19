@@ -30,11 +30,20 @@
 // 	public double currentJerkY;
 // 	public double currentJerkZ;
 
+//     private PIDSource getSource() {
+// 		return new PIDSource() {
+// 			@Override
+// 			public double pidGet() {
+// 				return Robot.drivetrain.rightMotor1.getRate();
+// 			}
+// 		};
+//     }
+    
 // 	public DrivetrainCompanion() {
 // 		usingDistancePID = false;
 
-// 		distanceController = new PIDController(RobotMap.drivetrainDistanceP, RobotMap.drivetrainDistanceI,
-// 				RobotMap.drivetrainDistanceD, RobotMap.drivetrainDistanceF, Robot.drivetrain.getDistanceMoved(), this);
+// 		distanceController = new PIDController(RobotMap.distP, RobotMap.distI,
+// 				RobotMap.distD, RobotMap.distF, Robot.drivetrain.rightMotor1.getE, this);
 // 		distanceController.setOutputRange(-1.0, 1.0);
 // 		distanceController.setAbsoluteTolerance(distanceTolerance);
 

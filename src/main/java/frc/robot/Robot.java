@@ -36,6 +36,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Vision;
 /**
  * 
  * The VM is configured to automatically run this class, and to call the
@@ -66,6 +67,8 @@ public class Robot extends TimedRobot {
 	public static Intake intake = new Intake();
 	
 	public static Climber climber = new Climber();
+	public static Vision vision = new Vision();
+	// public static DrivetrainCompanion drivetrainCompanion = new DrivetrainCompanion();
 
 	public static Drivetrain drivetrain;
 
@@ -109,17 +112,17 @@ public class Robot extends TimedRobot {
 		// SmartDashboard.putNumber("Unspool", 0);
 		// SmartDashboard.putNumber("Feed Forward", 0.1);
 
-		SmartDashboard.putBoolean("Change Arm Config", false);
-		SmartDashboard.putNumber("Arm P", 0);
+		SmartDashboard.putNumber("Arm P", 0.5);
 		SmartDashboard.putNumber("Arm I", 0);
-		SmartDashboard.putNumber("Arm D", 0);
+		SmartDashboard.putNumber("Arm D", 0.8);
 		SmartDashboard.putNumber("Arm F", 0);
 
-		SmartDashboard.putNumber("Angle of Arm", 0);
+		SmartDashboard.putNumber("Angle of Arm", 45);
 		SmartDashboard.putNumber("Feed Forward", 0.1);
 		SmartDashboard.putNumber("Spool Speed", 0.5);
 		SmartDashboard.putNumber("Intake Speed", 0.7);
-		SmartDashboard.putBoolean("Set Speed Both", Robot.pneumatics.compressor.enabled());
+		// Robot.pneumatics.setBikebrakeState(RobotMap.PistonIn);
+		
 		// chooser.setDefaultOption("Default Auto", new Command());
 
 		// chooser.addOption("My Auto", new MyAutoCommand());
@@ -155,7 +158,12 @@ public class Robot extends TimedRobot {
 	@Override
 
 	public void robotPeriodic() {
-
+		SmartDashboard.putNumber("Limelight X", vision.getX());
+		SmartDashboard.putNumber("Limelight Y", vision.getY());
+		SmartDashboard.putNumber("Limelight Distance", vision.getDistance());
+		SmartDashboard.putNumber("Limelight Area", vision.getArea());
+		SmartDashboard.putNumber("Joystick Value Left", OI.driverController.getY(Hand.kLeft));
+		SmartDashboard.putNumber("Joystick Value Right", OI.driverController.getX(Hand.kRight));
 	}
 
 	/**
@@ -294,12 +302,10 @@ public class Robot extends TimedRobot {
 		// SmartDashboard.putNumber("Output", Robot.climber.sparkMaxF.getOutputCurrent());
 		SmartDashboard.putNumber("Output Controller", OI.driverController.getY(Hand.kLeft));
 		// SmartDashboard.putBoolean("Is Encoder On", Robot.drivetrain.isEncoderOn());
-		if(SmartDashboard.getBoolean("Change Arm Config", false)) {
-			Robot.arm.hawkTalonA.setConfig(new SRXPID(
+		Robot.arm.hawkTalonA.setConfig(new SRXPID(
 				SmartDashboard.getNumber("Arm F", 0), SmartDashboard.getNumber("Arm P", 0), 
 				SmartDashboard.getNumber("Arm I", 0), SmartDashboard.getNumber("Arm D", 0)), 0);
-		}
-		SmartDashboard.putNumber("Encoder", Robot.drivetrain.rightMotor1.getSelectedSensorPosition());
+		SmartDashboard.putNumber("Encoder", Robot.arm.hawkTalonA.getSelectedSensorPosition());
 		// SmartDashboard.putNumber("Applied Output", Robot.arm.sparkMaxA.getAppliedOutput());
 		// SmartDashboard.putNumber("Bus Voltage", Robot.arm.sparkMaxA.getBusVoltage());
 		// SmartDashboard.putNumber("Output Current", Robot.arm.sparkMaxA.getOutputCurrent());
