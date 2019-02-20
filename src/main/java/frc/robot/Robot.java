@@ -12,11 +12,14 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.cscore.AxisCamera;
 import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.hal.sim.mockdata.PDPDataJNI;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -38,6 +41,7 @@ import frc.robot.subsystems.Climber;
  * project.
  */
 public class Robot extends TimedRobot {
+	public static PowerDistributionPanel pdp;
 	public static AHRS navX;
 	public static Drivetrain drivetrain;
 	public static Pneumatics pneumatics;
@@ -46,6 +50,10 @@ public class Robot extends TimedRobot {
 	public static Climber climber;
 	public static Intake intake;
 	public static OI oi;
+
+	private DigitalInput limit;
+	private boolean rumbling = false;
+	private int ticks = 10;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -62,22 +70,23 @@ public class Robot extends TimedRobot {
 			DriverStation.reportError("NAVX ERROR: " + e.getMessage(), true);
 		}
 
+		pdp = new PowerDistributionPanel();
 		drivetrain = new Drivetrain();
 		pneumatics = new Pneumatics();
 		arm = new Arm();
-		vision = new Vision("limelight-lower");
+		vision = new Vision("limelight");
 		climber = new Climber();
 		intake = new Intake();
 		oi = new OI();
+
+		limit = new DigitalInput(4);
 
 		// chooser.setDefaultOption("Default Auto", new Command());
 		// chooser.addOption("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Autonomous", chooser);
 		
 		SmartDashboard.putNumber("Intake Speed", 0);
-		SmartDashboard.putNumber("Outake Speed", 0);
-
-		
+		SmartDashboard.putNumber("Outake Speed", 0);		
 	}
 
 	/**
@@ -109,8 +118,74 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Limelight Area", Robot.vision.getArea());
 		SmartDashboard.putNumber("Limelight Distance", Robot.vision.getDistance());
 		SmartDashboard.putNumber("Operator Controller", OI.operatorController.getX(Hand.kLeft));
-	}
 
+		// SmartDashboard.putNumber("Voltage 1", PDPDataJNI.getVoltage(1));
+		// SmartDashboard.putNumber("Voltage 2", PDPDataJNI.getVoltage(2));
+		// SmartDashboard.putNumber("Voltage 3", PDPDataJNI.getVoltage(3));
+		
+		SmartDashboard.putNumber("PDP Voltage", pdp.getVoltage());
+
+		SmartDashboard.putNumber("PDP Current 0", pdp.getCurrent(0));
+		SmartDashboard.putNumber("PDP Current 1", pdp.getCurrent(1));
+		SmartDashboard.putNumber("PDP Current 2", pdp.getCurrent(2));
+		SmartDashboard.putNumber("PDP Current 3", pdp.getCurrent(3));
+		SmartDashboard.putNumber("PDP Current 4", pdp.getCurrent(4));
+		SmartDashboard.putNumber("PDP Current 5", pdp.getCurrent(5));
+		SmartDashboard.putNumber("PDP Current 6", pdp.getCurrent(6));
+		SmartDashboard.putNumber("PDP Current 7", pdp.getCurrent(7));
+		SmartDashboard.putNumber("PDP Current 8", pdp.getCurrent(8));
+		SmartDashboard.putNumber("PDP Current 9", pdp.getCurrent(9));
+		SmartDashboard.putNumber("PDP Current 10", pdp.getCurrent(10));
+		SmartDashboard.putNumber("PDP Current 11", pdp.getCurrent(11));
+		SmartDashboard.putNumber("PDP Current 12", pdp.getCurrent(12));
+		SmartDashboard.putNumber("PDP Current 13", pdp.getCurrent(13));
+		SmartDashboard.putNumber("PDP Current 14", pdp.getCurrent(14));
+		SmartDashboard.putNumber("PDP Current 15", pdp.getCurrent(15));
+
+		SmartDashboard.putBoolean("Beak Is Open", limit.get());
+
+		if (pdp.getCurrent(0) > 30 || rumbling) {
+			rumbling = true;
+
+			vision.setLED(2);
+
+			OI.driverController.setRumble(RumbleType.kLeftRumble, 1);
+			OI.driverController.setRumble(RumbleType.kRightRumble, 1);
+			--ticks;
+
+			if (ticks <= 0) {
+				rumbling = false;
+			}
+		} else {
+			vision.setLED(0);
+
+			ticks = 15;
+
+			OI.driverController.setRumble(RumbleType.kLeftRumble, 0);
+			OI.driverController.setRumble(RumbleType.kRightRumble, 0);
+		}
+
+		SmartDashboard.putNumber("PDP Current 0", pdp.getCurrent(0));
+		// SmartDashboard.putNumber("PDP Current 1", pdp.getCurrent(1));
+		// SmartDashboard.putNumber("PDP Current 2", pdp.getCurrent(2));
+		// SmartDashboard.putNumber("PDP Current 3", pdp.getCurrent(3));
+		// SmartDashboard.putNumber("PDP Current 4", pdp.getCurrent(4));
+		// SmartDashboard.putNumber("PDP Current 5", pdp.getCurrent(5));
+		// SmartDashboard.putNumber("PDP Current 6", pdp.getCurrent(6));
+		// SmartDashboard.putNumber("PDP Current 7", pdp.getCurrent(7));
+		// SmartDashboard.putNumber("PDP Current 8", pdp.getCurrent(8));
+		// SmartDashboard.putNumber("PDP Current 9", pdp.getCurrent(9));
+		// SmartDashboard.putNumber("PDP Current 10", pdp.getCurrent(10));
+		// SmartDashboard.putNumber("PDP Current 11", pdp.getCurrent(11));
+		// SmartDashboard.putNumber("PDP Current 12", pdp.getCurrent(12));
+		// SmartDashboard.putNumber("PDP Current 13", pdp.getCurrent(13));
+		SmartDashboard.putNumber("PDP Current 14", pdp.getCurrent(14));
+		SmartDashboard.putNumber("PDP Current 15", pdp.getCurrent(15));
+
+		// SmartDashboard.putNumber("Current 1", PDPDataJNI.getCurrent(0, 1));
+		// SmartDashboard.putNumber("Current 2", PDPDataJNI.getCurrent(0, 2));
+		// SmartDashboard.putNumber("Current 3", PDPDataJNI.getCurrent(0, 3));
+	}
 
 	/**
 	 * This function is called once each time the robot enters Disabled mode. You
