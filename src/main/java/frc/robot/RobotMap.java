@@ -13,6 +13,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import frc.robot.subsystems.chassis.SRXPID;
 
 /**
  * 
@@ -86,6 +87,7 @@ public class RobotMap {
 
 	// MOTION MAGIC VALUES
 
+
 	public static final double drivetrainRotationP = 4;
 	public static final double drivetrainRotationI = 0;
 	public static final double drivetrainRotationD = 6;
@@ -100,17 +102,21 @@ public class RobotMap {
 	public static final double f = 0.01;
 
 	// PNEUMATICS
-    public static final int solenoidPort1A = 0;
-	public static final int solenoidPort2A = 1;
-	public static final int solenoidPort1B = 2;
-	public static final int solenoidPort2B = 3;
-	public static final int solenoidPort3 = 4;
-	public static final int solenoidPort4 = 5;
-	public static final int solenoidPort5 = 6;
-	public static final int solenoidPort6 = 7;
+	public static final int solenoidBeakA = 0;
+	public static final int solenoidBeakB = 1;
+	public static final int solenoidBrakeA = 2;
+	public static final int solenoidBrakeB = 3;
+	public static final int deployClampA = 4;
+	public static final int deployClampB = 5;
+	public static final int climberPistonA = 6;
+	public static final int climberPistonB = 7;
 	public static final int compressor = 0;
 
 	public static final double nativeUpdates = 100;
+
+	public static final int dioServoPort1 = 0;
+	public static final int dioServoPort2 = 0;
+
 
 	public static final DoubleSolenoid.Value PistonOut = DoubleSolenoid.Value.kForward;
 	public static final DoubleSolenoid.Value PistonIn = DoubleSolenoid.Value.kReverse;
@@ -122,4 +128,37 @@ public class RobotMap {
 	public static final int encTicksPerDeg = 1920 / 90;
 	public static final int degPerEncTicks = 90 / 1920;
 
+	// Distance PID
+	public static final double distP = 0.1;
+	public static final double distI = 0;
+	public static final double distD = 0;
+	public static final double distF = 0;
+	public static final int distIZone = 100;
+	public static final double distPeakOutput = 1;
+	
+	// Turn PID
+	public static final double turnP = 2;
+	public static final double turnI = 0;
+	public static final double turnD = 4;
+	public static final double turnF = 0;
+	public static final int turnIZone = 200;
+	public static final double turnPeakOutput = 1;
+
+	public static SRXPID turnGains = new SRXPID(turnF, turnP, turnI, turnD, turnIZone, turnPeakOutput);
+
+	// Velocity PID
+	// public static final double velP = 0.1;
+	// public static final double velI = 0;
+	// public static final double velD = 20;
+	// public static final double velF = (1023/6800);
+	// public static final int velIZone = 300;
+	// public static final double velPeakOutput = 0.5;
+
+	// Motion Profile PID
+	// public static final double mpP = 1;
+	// public static final double mpI = 0;
+	// public static final double mpD = 0;
+	// public static final double mpF = (1023/6800);
+	// public static final int mpIZone = 400;
+	// public static final double mpPeakOutput = 1;
 }

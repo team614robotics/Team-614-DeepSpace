@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 // import frc.robot.commands.SetSpeedClimber;
 import frc.robot.subsystems.chassis.HawkTalons;
@@ -36,10 +37,10 @@ public class Arm extends Subsystem {
   // here. Call these from Commands.
 
   public HawkTalons hawkTalonA;
-  public CANSparkMax sparkMaxB;
+  public HawkTalons hawkTalonB;
   // public CANSparkMax sparkMaxE;
   // public CANSparkMax sparkMaxF;
-  // private CANEncoder encoderA;
+   // private CANEncoder encoderA;
   // private CANEncoder encoderB;
 
   private CANPIDController pidController;
@@ -52,8 +53,8 @@ public class Arm extends Subsystem {
 
   public Arm() {
     hawkTalonA = new HawkTalons(RobotMap.sparkMaxA);
-    sparkMaxB = new CANSparkMax(RobotMap.sparkMaxB, MotorType.kBrushed);
-    sparkMaxB.setInverted(true);
+    hawkTalonB = new HawkTalons(RobotMap.sparkMaxB);
+    hawkTalonB.setInverted(false); //Set to true if needed
     // sparkMaxE = new CANSparkMax(RobotMap.sparkMaxE, MotorType.kBrushed);
     // sparkMaxF = new CANSparkMax(RobotMap.sparkMaxF, MotorType.kBrushed);  
 
@@ -78,18 +79,37 @@ public class Arm extends Subsystem {
   }
 
   public void configTalons() {
-		// TALON CONFIG
+    // TALON CONFIG
+    hawkTalonA.configFactoryDefault();
+    hawkTalonB.configFactoryDefault();
+    hawkTalonB.follow(hawkTalonA);
+    // --
 		hawkTalonA.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-		hawkTalonA.setSensorPhase(false); /* keep sensor and motor in phase */
+    hawkTalonA.setSensorPhase(false); /* keep sensor and motor in phase */
+    hawkTalonA.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, timeout);
+    hawkTalonA.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, timeout);
 		hawkTalonA.configNeutralDeadband(0.001, timeout);
 		hawkTalonA.configNominalOutputForward(0, timeout);
 		hawkTalonA.configNominalOutputReverse(0, timeout);
 		hawkTalonA.configPeakOutputForward(1, timeout);
 		hawkTalonA.configPeakOutputReverse(-1, timeout);
-    // --
-		hawkTalonA.setConfig(new SRXPID(0, 1, 0, 0), 0);
-		hawkTalonA.configMotionProfileTrajectoryPeriod(10, timeout); 
-	  hawkTalonA.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, timeout);
+		hawkTalonA.setConfig(new SRXPID(0, 0.1, 0, 0.12), 0);
+    hawkTalonA.selectProfileSlot(0, 0);
+    hawkTalonA.configMotionCruiseVelocity(220);
+    hawkTalonA.configMotionAcceleration(160);
+    hawkTalonA.setSelectedSensorPosition(0);
+ 
+    // hawkTalonB.setConfig(new SRXPID(0, 0.1, 0, 0.12), 0);
+    // hawkTalonA.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, timeout);
+    // hawkTalonA.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, timeout);
+		// hawkTalonB.configNeutralDeadband(0.001, timeout);
+		// hawkTalonB.configNominalOutputForward(0, timeout);
+		// hawkTalonB.configNominalOutputReverse(0, timeout);
+		// hawkTalonB.configPeakOutputForward(1, timeout);
+    // hawkTalonB.configPeakOutputReverse(-1, timeout);
+    
+    hawkTalonA.set(ControlMode.PercentOutput, 0);
+    hawkTalonB.set(ControlMode.PercentOutput, 0);
 	}
   
   @Override
@@ -100,17 +120,17 @@ public class Arm extends Subsystem {
   }
 
   public void set(double percent, double feedForward) {
-    double output = percent + feedForward * Math.cos(Math.toRadians(getAngle()));
+    // double output = percent + feedForward * Math.cos(Math.toRadians(getAngle()));
     // output = output > 1.0 ? 1.0 : output;
     // output = output < -1.0 ? -1.0 : output;
-    if(getAngle() < 6) {
-      output = percent;
-    }
-    else if(getAngle() > 90) {
-      output = percent;
-    }
-    hawkTalonA.set(ControlMode.PercentOutput, 0.2 * percent);
-    sparkMaxB.follow(CANSparkMax.ExternalFollower.kFollowerPhoenix, hawkTalonA.getDeviceID());
+    // if(getAngle() < 6) {
+    //   output = percent;
+    // }
+    // else if(getAngle() > 90) {
+    //   output = percent;
+    // }
+    hawkTalonA.set(ControlMode.PercentOutput, 0.5 * percent);
+    hawkTalonB.follow(hawkTalonA);
     // sparkMaxB.setInverted(true);
   }
 
@@ -118,9 +138,25 @@ public class Arm extends Subsystem {
     hawkTalonA.set(output);
   }
 
+  public void setMotionMagic(double distance) {
+    hawkTalonA.set(ControlMode.MotionMagic, distance);
+    hawkTalonB.follow(hawkTalonA);
+    SmartDashboard.putNumber("BUS Voltage", hawkTalonA.getBusVoltage());
+    SmartDashboard.putNumber("Motor Output", hawkTalonA.getMotorOutputPercent());
+    SmartDashboard.putNumber("Motor Voltage", hawkTalonA.getMotorOutputVoltage());
+  }
+
+  public void setMotionMagicArbFeedForward(double distance, double feedForward) {
+    hawkTalonA.set(ControlMode.MotionMagic, distance);
+    hawkTalonB.follow(hawkTalonA);
+    SmartDashboard.putNumber("BUS Voltage", hawkTalonA.getBusVoltage());
+    SmartDashboard.putNumber("Motor Output", hawkTalonA.getMotorOutputPercent());
+    SmartDashboard.putNumber("Motor Voltage", hawkTalonA.getMotorOutputVoltage());
+  }
+
   public void setSpeedBoth(double output) {
     hawkTalonA.set(ControlMode.PercentOutput, output);
-    sparkMaxB.follow(CANSparkMax.ExternalFollower.kFollowerPhoenix, hawkTalonA.getDeviceID());
+    hawkTalonB.follow(hawkTalonA);
   }
 
   private double sensorUnitsToDegrees(double units) {
@@ -139,6 +175,10 @@ public class Arm extends Subsystem {
     hawkTalonA.setSelectedSensorPosition(0);
   }
 
+  public double getRawPosition() {
+    return hawkTalonA.getSelectedSensorPosition(0);
+  }
+  
   // public void unspool(double speed) {
   //   sparkMaxF.set(speed);
   // }

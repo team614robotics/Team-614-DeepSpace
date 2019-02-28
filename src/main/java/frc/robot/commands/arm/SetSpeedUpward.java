@@ -18,9 +18,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class SetSpeed extends Command {
-	double pastState = -1;
-	public SetSpeed() {
+public class SetSpeedUpward extends Command {
+	public SetSpeedUpward() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.arm);
@@ -38,13 +37,7 @@ public class SetSpeed extends Command {
 		// else {
 		//     Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonOut);
 		// }
-		// if(-OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft) != 0) {
-		// 	Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonIn);
-		// } else if(pastState < 0 && (-OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft) == 0)) {
-        //     Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonOut);
-		// }
-		Robot.arm.set(-OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft), 0);
-		// pastState = -OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft);
+		Robot.arm.set(0.5, 0);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

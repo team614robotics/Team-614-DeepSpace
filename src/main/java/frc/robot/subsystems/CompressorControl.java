@@ -20,11 +20,8 @@ public class CompressorControl extends Command {
 
 
 	public CompressorControl() {
-
 		// Use requires() here to declare subsystem dependencies
-
 		requires(Robot.pneumatics);
-
 	}
 
 
@@ -32,7 +29,6 @@ public class CompressorControl extends Command {
 	// Called just before this Command runs the first time
 
 	protected void initialize() {
-
 		Robot.pneumatics.compressor.start();
 
 	}

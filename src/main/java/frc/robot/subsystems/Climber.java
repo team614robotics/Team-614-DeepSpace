@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -26,6 +27,11 @@ public class Climber extends Subsystem {
   public CANSparkMax sparkMaxD;
   public CANSparkMax sparkMaxF; //Unspooler
 
+  // public Servo servoA = new Servo(RobotMap.dioServoPort1);
+  // public Servo servoB = new Servo(RobotMap.dioServoPort2);
+	
+	public double servoStart = 0.0;
+
 
   public Climber() {
     sparkMaxC = new CANSparkMax(RobotMap.sparkMaxC, MotorType.kBrushless);
@@ -37,6 +43,7 @@ public class Climber extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
     setDefaultCommand(new SetSpeedClimber());
+    // setServos(servoStart);
   }
   public void setSpeedA(double speed) {
       sparkMaxC.set(speed);
@@ -48,4 +55,8 @@ public class Climber extends Subsystem {
   public void spool(double speed) {
       sparkMaxF.set(speed);
   }
+  // public void setServos(double value) {
+  //   servoA.set(value);
+  //   servoB.set(value);
+	// }
 }

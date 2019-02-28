@@ -17,8 +17,8 @@ import frc.robot.RobotMap;
 /**
  *
  */
-public class Clamper extends Command {
-	public Clamper() {
+public class BackPistons extends Command {
+	public BackPistons() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.pneumatics);
@@ -26,11 +26,13 @@ public class Clamper extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		if(Robot.pneumatics.getClimberState().equals(RobotMap.PistonIn)) {
-			Robot.pneumatics.setClimberState(RobotMap.PistonOut);
-		}
-		else {
-            Robot.pneumatics.setClimberState(RobotMap.PistonIn);
+		if (Robot.pneumatics.getClamperAAState().equals(RobotMap.PistonIn)) {
+			Robot.pneumatics.setClamperAAState(RobotMap.PistonOut);
+			Robot.pneumatics.setClamperBBState(true);
+		} else {
+			Robot.pneumatics.setClamperAAState(RobotMap.PistonIn);
+			Robot.pneumatics.setClamperBBState(false);
+
 		}
 	}
 
