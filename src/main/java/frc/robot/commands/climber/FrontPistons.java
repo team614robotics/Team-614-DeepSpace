@@ -28,9 +28,9 @@ public class FrontPistons extends Command {
 	protected void initialize() {
 		if(Robot.pneumatics.clamperBA.get()) {
 			Robot.pneumatics.clamperBA.set(false);
-
 		}
-		else {Robot.pneumatics.clamperBA.set(true);
+		else {
+			Robot.pneumatics.clamperBA.set(true);
 		}
 	}
 
