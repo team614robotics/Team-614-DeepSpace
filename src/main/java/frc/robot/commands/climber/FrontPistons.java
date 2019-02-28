@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.arm;
+package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
@@ -13,43 +13,35 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
-public class SetSpeed extends Command {
-	double pastState = -1;
-	public SetSpeed() {
+public class FrontPistons extends Command {
+	public FrontPistons() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
-		requires(Robot.arm);
+		requires(Robot.pneumatics);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		if(Robot.pneumatics.clamperBA.get()) {
+			Robot.pneumatics.clamperBA.set(false);
+
+		}
+		else {Robot.pneumatics.clamperBA.set(true);
+		}
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		// if(OI.operatorController.getY(Hand.kRight) == 0) {
-		// 	Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonIn);
-		// }
-		// else {
-		//     Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonOut);
-		// }
-		// if(-OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft) != 0) {
-		// 	Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonIn);
-		// } else if(pastState < 0 && (-OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft) == 0)) {
-        //     Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonOut);
-		// }
-		Robot.arm.set(-OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft), 0);
-		// pastState = -OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft);
+		// Robot.climber.setSpeedBoth(OI.operatorController.getY(Hand.kLeft));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return false;
+		return true;
 	}
 
 	// Called once after isFinished returns true

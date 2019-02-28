@@ -14,10 +14,12 @@ package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
-
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -37,6 +39,7 @@ import frc.robot.subsystems.Intake;
 
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Vision;
+
 /**
  * 
  * The VM is configured to automatically run this class, and to call the
@@ -53,6 +56,7 @@ import frc.robot.subsystems.Vision;
 
 public class Robot extends TimedRobot {
 
+	// public static PowerDistributionPanel pdp;
 	public static AHRS navX;
 
 	// public static Drivetrain drivetrain;
@@ -65,16 +69,21 @@ public class Robot extends TimedRobot {
 
 	public static Arm arm = new Arm();
 	public static Intake intake = new Intake();
-	
+
 	public static Climber climber = new Climber();
 	public static Vision vision = new Vision();
-	// public static DrivetrainCompanion drivetrainCompanion = new DrivetrainCompanion();
+	// public static DrivetrainCompanion drivetrainCompanion = new
+	// DrivetrainCompanion();
 
 	public static Drivetrain drivetrain;
 
 	Command autonomousCommand;
 
 	SendableChooser<Command> chooser = new SendableChooser<>();
+
+	private DigitalInput limit;
+	private boolean rumbling = false;
+	private int ticks = 10;
 
 	/**
 	 * 
@@ -97,17 +106,17 @@ public class Robot extends TimedRobot {
 			DriverStation.reportError("NAVX ERROR: " + e.getMessage(), true);
 
 		}
-		
+
 		drivetrain = new Drivetrain();
 		// drivetrainCompanion = new DrivetrainCompanion();
 		pneumatics = new Pneumatics();
 		oi = new OI();
-		
+
+		// pdp = new PowerDistributionPanel();
+		// limit = new DigitalInput(4);
 
 		// SmartDashboard.putBoolean("SetSpeedBoth", false);
 		// SmartDashboard.putNumber("SpeedArm", 0.5);
-	
-		
 
 		// SmartDashboard.putNumber("Unspool", 0);
 		// SmartDashboard.putNumber("Feed Forward", 0.1);
@@ -122,18 +131,21 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Spool Speed", 0.5);
 		SmartDashboard.putNumber("Intake Speed", 0.7);
 		// Robot.pneumatics.setBikebrakeState(RobotMap.PistonIn);
-		
+
 		// chooser.setDefaultOption("Default Auto", new Command());
 
 		// chooser.addOption("My Auto", new MyAutoCommand());
 
 		// SmartDashboard.putData("Autonomous", chooser);
 
-		// SmartDashboard.putNumber("Drivetrain Left Encoder Distance", drivetrain.leftEncoder.getDistance());
+		// SmartDashboard.putNumber("Drivetrain Left Encoder Distance",
+		// drivetrain.leftEncoder.getDistance());
 
-		// SmartDashboard.putNumber("Drivetrain Left Encoder Rate", drivetrain.leftEncoder.getRate());
+		// SmartDashboard.putNumber("Drivetrain Left Encoder Rate",
+		// drivetrain.leftEncoder.getRate());
 
-		// SmartDashboard.putNumber("Drivetrain Left Encoder Get", drivetrain.leftEncoder.get());
+		// SmartDashboard.putNumber("Drivetrain Left Encoder Get",
+		// drivetrain.leftEncoder.get());
 	}
 
 	/**
@@ -164,6 +176,44 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Limelight Area", vision.getArea());
 		SmartDashboard.putNumber("Joystick Value Left", OI.driverController.getY(Hand.kLeft));
 		SmartDashboard.putNumber("Joystick Value Right", OI.driverController.getX(Hand.kRight));
+
+		// SmartDashboard.putBoolean("Beak Is Open", limit.get());
+
+		// if (pdp.getCurrent(0) > 30 || rumbling) {
+		// 	rumbling = true;
+		// 	vision.setLED(2);
+
+		// 	OI.driverController.setRumble(RumbleType.kLeftRumble, 1);
+		// 	OI.driverController.setRumble(RumbleType.kRightRumble, 1);
+		// 	--ticks;
+
+		// 	if (ticks <= 0) {
+		// 		rumbling = false;
+		// 	}
+		// } else {
+		// 	vision.setLED(0);
+		// 	ticks = 15;
+
+		// 	OI.driverController.setRumble(RumbleType.kLeftRumble, 0);
+		// 	OI.driverController.setRumble(RumbleType.kRightRumble, 0);
+		// }
+
+		// SmartDashboard.putNumber("PDP Current 0", pdp.getCurrent(0));
+		// SmartDashboard.putNumber("PDP Current 1", pdp.getCurrent(1));
+		// SmartDashboard.putNumber("PDP Current 2", pdp.getCurrent(2));
+		// SmartDashboard.putNumber("PDP Current 3", pdp.getCurrent(3));
+		// SmartDashboard.putNumber("PDP Current 4", pdp.getCurrent(4));
+		// SmartDashboard.putNumber("PDP Current 5", pdp.getCurrent(5));
+		// SmartDashboard.putNumber("PDP Current 6", pdp.getCurrent(6));
+		// SmartDashboard.putNumber("PDP Current 7", pdp.getCurrent(7));
+		// SmartDashboard.putNumber("PDP Current 8", pdp.getCurrent(8));
+		// SmartDashboard.putNumber("PDP Current 9", pdp.getCurrent(9));
+		// SmartDashboard.putNumber("PDP Current 10", pdp.getCurrent(10));
+		// SmartDashboard.putNumber("PDP Current 11", pdp.getCurrent(11));
+		// SmartDashboard.putNumber("PDP Current 12", pdp.getCurrent(12));
+		// SmartDashboard.putNumber("PDP Current 13", pdp.getCurrent(13));
+		// SmartDashboard.putNumber("PDP Current 14", pdp.getCurrent(14));
+		// SmartDashboard.putNumber("PDP Current 15", pdp.getCurrent(15));
 	}
 
 	/**
@@ -294,23 +344,30 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 
 		Scheduler.getInstance().run();
-		// SmartDashboard.putNumber("Drivetrain Left Encoder Distance", drivetrain.leftEncoder.getDistance());
-		// SmartDashboard.putNumber("Drivetrain Left Encoder Rate", drivetrain.leftEncoder.getRate());
-		// SmartDashboard.putNumber("Drivetrain Left Encoder Get", drivetrain.leftEncoder.get());
+		// SmartDashboard.putNumber("Drivetrain Left Encoder Distance",
+		// drivetrain.leftEncoder.getDistance());
+		// SmartDashboard.putNumber("Drivetrain Left Encoder Rate",
+		// drivetrain.leftEncoder.getRate());
+		// SmartDashboard.putNumber("Drivetrain Left Encoder Get",
+		// drivetrain.leftEncoder.get());
 		SmartDashboard.putNumber("navX Yaw", Robot.navX.getYaw());
 		// SmartDashboard.putNumber("Voltage", Robot.climber.sparkMaxF.getBusVoltage());
-		// SmartDashboard.putNumber("Output", Robot.climber.sparkMaxF.getOutputCurrent());
+		// SmartDashboard.putNumber("Output",
+		// Robot.climber.sparkMaxF.getOutputCurrent());
 		SmartDashboard.putNumber("Output Controller", OI.driverController.getY(Hand.kLeft));
 		// SmartDashboard.putBoolean("Is Encoder On", Robot.drivetrain.isEncoderOn());
-		Robot.arm.hawkTalonA.setConfig(new SRXPID(
-				SmartDashboard.getNumber("Arm F", 0), SmartDashboard.getNumber("Arm P", 0), 
-				SmartDashboard.getNumber("Arm I", 0), SmartDashboard.getNumber("Arm D", 0)), 0);
+		Robot.arm.hawkTalonA
+				.setConfig(new SRXPID(SmartDashboard.getNumber("Arm F", 0), SmartDashboard.getNumber("Arm P", 0),
+						SmartDashboard.getNumber("Arm I", 0), SmartDashboard.getNumber("Arm D", 0)), 0);
 		SmartDashboard.putNumber("Encoder", Robot.arm.hawkTalonA.getSelectedSensorPosition());
-		// SmartDashboard.putNumber("Applied Output", Robot.arm.sparkMaxA.getAppliedOutput());
+		// SmartDashboard.putNumber("Applied Output",
+		// Robot.arm.sparkMaxA.getAppliedOutput());
 		// SmartDashboard.putNumber("Bus Voltage", Robot.arm.sparkMaxA.getBusVoltage());
-		// SmartDashboard.putNumber("Output Current", Robot.arm.sparkMaxA.getOutputCurrent());
+		// SmartDashboard.putNumber("Output Current",
+		// Robot.arm.sparkMaxA.getOutputCurrent());
 		// SmartDashboard.putBoolean("Is Encoder Present", );
-		// SmartDashboard.putNumber("Motor Temperature", Robot.arm.sparkMaxA.getMotorTemperature());
+		// SmartDashboard.putNumber("Motor Temperature",
+		// Robot.arm.sparkMaxA.getMotorTemperature());
 	}
 
 	/**

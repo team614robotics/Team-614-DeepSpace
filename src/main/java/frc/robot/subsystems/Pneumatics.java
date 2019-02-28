@@ -23,19 +23,19 @@ public class Pneumatics extends Subsystem {
 
 	public Compressor compressor;
 
+	public DoubleSolenoid clamperAA;
+	public Solenoid clamperBA;
+	public Solenoid clamperBB;
 	public DoubleSolenoid bikebrakePiston;
-
-	public DoubleSolenoid climberPistonA;
-	public DoubleSolenoid climberPistonB;
-
 	public DoubleSolenoid umbrellaPiston;
 
 	public Pneumatics() {
 		compressor = new Compressor(RobotMap.compressor);
-		climberPistonA = new DoubleSolenoid(RobotMap.solenoidPort1A, RobotMap.solenoidPort2A);
-		climberPistonB = new DoubleSolenoid(RobotMap.solenoidPort1B, RobotMap.solenoidPort2B);
+		clamperAA = new DoubleSolenoid(0, 1);
+		clamperBA = new Solenoid(7);
+		clamperBB = new Solenoid(6);
 		bikebrakePiston = new DoubleSolenoid(4, 5);
-		umbrellaPiston = new DoubleSolenoid(RobotMap.solenoidPort5, RobotMap.solenoidPort6);
+		umbrellaPiston = new DoubleSolenoid(2, 3);
 	}
 
 	public void initDefaultCommand() {
@@ -43,8 +43,11 @@ public class Pneumatics extends Subsystem {
 		setDefaultCommand(new CompressorControl());
 	}
 
-	public DoubleSolenoid.Value getClimberState() {
-		return climberPistonA.get();
+	public DoubleSolenoid.Value getClamperAAState() {
+		return clamperAA.get();
+	}
+	public boolean getClamperBAState() {
+		return clamperBA.get();
 	}
 	public DoubleSolenoid.Value getBikebrakeState() {
 		return bikebrakePiston.get();
@@ -53,9 +56,16 @@ public class Pneumatics extends Subsystem {
 		return umbrellaPiston.get();
 	}
 
-	public void setClimberState(DoubleSolenoid.Value state) {
-		climberPistonA.set(state);
-		climberPistonB.set(state);
+	public void setClamperAAState(DoubleSolenoid.Value state) {
+		clamperAA.set(state);
+	}
+	public void setClamperBAState(boolean state) {
+		clamperBA.set(state);
+	
+	}
+	public void setClamperBBState(boolean state) {
+		clamperBB.set(state);
+	
 	}
 	public void setBikebrakeState(DoubleSolenoid.Value state) {
 		bikebrakePiston.set(state);

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.chassis.Drivetrain;
 
 // 	NAVX DEGREE ORIENTATION:
 // 			 0
@@ -33,19 +34,22 @@ public class DriveToTarget extends Command {
 	protected void initialize() {
 		Robot.vision.setPipeline(pipeline);
 		Robot.vision.setCamMode(camMode);
-		Robot.drivetrain.getTurnController().setSetpoint(Robot.navX.getYaw());
+		Robot.navX.reset();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		SmartDashboard.putNumber("Right Encoder Positions", Robot.drivetrain.rightMotor1.getSelectedSensorPosition());
-		Robot.drivetrain.arcadeDrive(OI.driverController.getY(Hand.kLeft), -(Robot.drivetrain.getTurnController().getError() / 45));
+		Robot.drivetrain.runCollisionDetection();
+		double c = Robot.vision.getX() < 0 ? -0.35 : 0.35;
+		double forward = Robot.vision.getDistance() * 0.0035 + 0.35;
+		Robot.drivetrain.arcadeDrive(0.0, (Robot.vision.getX() * 0.023) + c);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		// return Robot.vision.getDistance() < 10;
-		return false;
+		return this.timeSinceInitialized() > 1.5 && (Math.abs(Robot.drivetrain.getCurrentJerkY()) > 0.6f
+				|| Math.abs(Robot.drivetrain.getCurrentJerkX()) > 0.6f);
 	}
 
 	// Called once after isFinished returns true

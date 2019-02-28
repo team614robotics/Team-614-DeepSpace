@@ -12,6 +12,8 @@
 
 package frc.robot;
 
+//
+
 import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -28,6 +30,7 @@ import frc.robot.commands.arm.*;
 import frc.robot.commands.intake.*;
 import frc.robot.commands.drivetrain.DriveToHatchPanel;
 import frc.robot.commands.drivetrain.DriveForADistance;
+import frc.robot.commands.drivetrain.DriveToCargo;
 import frc.robot.commands.drivetrain.DriveToTarget;
 /**
  * 
@@ -108,7 +111,7 @@ public class OI {
 	public static final Button clamper = new JoystickButton(operatorController, YButton);
 	public static final Button setSpeedSpooler = new JoystickButton(operatorController, BButton);
 	
-	// public static final Button armBikeBrake = new JoystickButton(driverController, XButton);
+	public static final Button armBikeBrake = new JoystickButton(driverController, XButton);
 	public static final Button setPosition = new JoystickButton(driverController, AButton);
 
 
@@ -116,31 +119,33 @@ public class OI {
 	public static final Button revIntake = new JoystickButton(driverController, RightBumper);
 	public static final Button toggleUmbrella = new JoystickButton(driverController, LeftBumper);
 
-	// public static final Button driveToHatchPanel = new JoystickButton(driverController, YButton);
-	public static final Button unlockBikebrake = new JoystickButton(driverController, YButton);
+	public static final Button driveToHatchPanel = new JoystickButton(driverController, YButton);
 
-	public static final Button lockBikebrake = new JoystickButton(driverController, XButton);
+	public static final Button unlockBikebrake = new JoystickButton(operatorController, BButton);
+	public static final Button lockBikebrake = new JoystickButton(operatorController, AButton);
+	public static final Button frontPistons = new JoystickButton(operatorController, XButton);
+	public static final Button backPistons = new JoystickButton(operatorController, YButton);
 
 
 
 	public OI() {
 		// Unspool.whileHeld(new Unspool());
 		// Unspool.whileHeld(new SetSpeed());
-		clamper.whenPressed(new Clamper());
-		setSpeedSpooler.whileHeld(new SetSpeedSpooler());
+		// clamper.whenPressed(new Clamper());
+		// setSpeedSpooler.whileHeld(new SetSpeedSpooler());
 		
 		// armBikeBrake.whenPressed(new Bikebrake());
-		setPosition.whileHeld(new DriveToTarget(2, 0));
-		
-		revOutake.whileHeld(new RevOutake());
-		revIntake.whileHeld(new RevIntake());
-		toggleUmbrella.whenPressed(new ToggleUmbrella());
 
-		// driveToHatchPanel.whileHeld(new DriveToHatchPanel());
+		// Driver Controller
+		revOutake.whileHeld(new RevOutake()); // B
+		revIntake.whileHeld(new RevIntake()); // Right Bumper
+		toggleUmbrella.whenPressed(new ToggleUmbrella()); // Left Bumper
+		driveToHatchPanel.whileHeld(new DriveToHatchPanel()); // Y
 
-		unlockBikebrake.whenPressed(new UnlockBikebrake());
-		lockBikebrake.whenPressed(new LockBikebrake());
-
-
+		// Operator Controller
+		unlockBikebrake.whenPressed(new UnlockBikebrake()); // B
+		lockBikebrake.whenPressed(new LockBikebrake()); // A	
+		frontPistons.whenPressed(new FrontPistons()); // X
+		backPistons.whenPressed(new BackPistons()); // Y
 	}
 }

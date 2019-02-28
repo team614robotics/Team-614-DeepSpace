@@ -41,8 +41,7 @@ public class DriveForADistance extends Command {
 		// Robot.drivetrain.
 		// Sets the setpoint at which how far you want the robot to go, it will
 		// manipulate the output whenever it needs to
-        Robot.drivetrain.rightMotor1.set(ControlMode.MotionMagic, 4000);
-        Robot.drivetrain.leftMotor1.follow(Robot.drivetrain.rightMotor1);
+          Robot.drivetrain.straightDrive(400, -Robot.navX.getYaw());
 	}
 
 	protected boolean isFinished() {

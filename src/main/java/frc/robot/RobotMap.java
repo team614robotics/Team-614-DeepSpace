@@ -13,6 +13,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import frc.robot.subsystems.chassis.SRXPID;
 
 /**
  * 
@@ -101,14 +102,14 @@ public class RobotMap {
 	public static final double f = 0.01;
 
 	// PNEUMATICS
-    public static final int solenoidPort1A = 0;
-	public static final int solenoidPort2A = 1;
-	public static final int solenoidPort1B = 2;
-	public static final int solenoidPort2B = 3;
-	public static final int bikeBrakeA = 4;
-	public static final int bikeBrakeB = 5;
-	public static final int solenoidPort5 = 6;
-	public static final int solenoidPort6 = 7;
+	public static final int solenoidBeakA = 0;
+	public static final int solenoidBeakB = 1;
+	public static final int solenoidBrakeA = 2;
+	public static final int solenoidBrakeB = 3;
+	public static final int deployClampA = 4;
+	public static final int deployClampB = 5;
+	public static final int climberPistonA = 6;
+	public static final int climberPistonB = 7;
 	public static final int compressor = 0;
 
 	public static final double nativeUpdates = 100;
@@ -136,12 +137,14 @@ public class RobotMap {
 	public static final double distPeakOutput = 1;
 	
 	// Turn PID
-	public static final double turnP = 2.0;
+	public static final double turnP = 2;
 	public static final double turnI = 0;
-	public static final double turnD = 4.0;
+	public static final double turnD = 4;
 	public static final double turnF = 0;
 	public static final int turnIZone = 200;
 	public static final double turnPeakOutput = 1;
+
+	public static SRXPID turnGains = new SRXPID(turnF, turnP, turnI, turnD, turnIZone, turnPeakOutput);
 
 	// Velocity PID
 	// public static final double velP = 0.1;

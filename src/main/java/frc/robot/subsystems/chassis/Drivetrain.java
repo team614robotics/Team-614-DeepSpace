@@ -12,6 +12,7 @@ import frc.robot.subsystems.chassis.HawkTalons;
 import frc.robot.subsystems.chassis.SRXPID;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
@@ -19,6 +20,7 @@ import com.ctre.phoenix.motorcontrol.StickyFaults;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 
@@ -36,7 +38,15 @@ public class Drivetrain extends Subsystem implements PIDOutput{
 
 	private DifferentialDrive drive = new DifferentialDrive(leftMotor1, rightMotor1);
 
-    public static final double unitsPerInch = 1000; //No
+	public static final double unitsPerInch = 1000; //No
+	
+		public final double distanceTolerance = 0.1f;
+	public double last_world_linear_accel_x;
+	public double last_world_linear_accel_y;
+	public double last_world_linear_accel_z;
+	public double currentJerkX;
+	public double currentJerkY;
+	public double currentJerkZ;
 
 	public Drivetrain() {
 		turnPID = false;
@@ -131,6 +141,7 @@ public class Drivetrain extends Subsystem implements PIDOutput{
 	}
 
 	public void configTalons() {
+
 		// RIGHT MOTOR CONFIG
 		rightMotor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 		rightMotor1.setSensorPhase(false); /* keep sensor and motor in phase */
@@ -141,7 +152,7 @@ public class Drivetrain extends Subsystem implements PIDOutput{
 		rightMotor1.configPeakOutputReverse(-1, timeout);
         // --
 		rightMotor1.setConfig(new SRXPID(RobotMap.distF, RobotMap.distP, RobotMap.distI, RobotMap.distD), 0); //Tune later on
-		rightMotor1.setConfig(new SRXPID(RobotMap.turnF, RobotMap.turnP, RobotMap.turnI, RobotMap.turnD), 1);
+		rightMotor1.setConfig(RobotMap.turnGains, 1);
 		rightMotor1.configMotionProfileTrajectoryPeriod(10, timeout); 
 		rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 20, timeout);
 		rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20, timeout);
@@ -160,7 +171,7 @@ public class Drivetrain extends Subsystem implements PIDOutput{
 		leftMotor1.configPeakOutputReverse(-1, timeout);
         // --
 		leftMotor1.setConfig(new SRXPID(RobotMap.distF, RobotMap.distP, RobotMap.distI, RobotMap.distD), 0); //Tune later on
-		leftMotor1.setConfig(new SRXPID(RobotMap.turnF, RobotMap.turnP, RobotMap.turnI, RobotMap.turnD), 1);
+		leftMotor1.setConfig(RobotMap.turnGains, 1);
 		leftMotor1.config_IntegralZone(0, RobotMap.distIZone);
 		leftMotor1.config_IntegralZone(1, RobotMap.turnIZone);
 		leftMotor1.configClosedLoopPeakOutput(0, RobotMap.distPeakOutput);
@@ -203,8 +214,35 @@ public class Drivetrain extends Subsystem implements PIDOutput{
 		leftMotor1.setSpeed(0);
 	}
 
+	public void straightDrive(double distance, double turn) {
+	  rightMotor1.set(ControlMode.MotionMagic, distance, DemandType.AuxPID, turn);
+	  leftMotor1.follow(leftMotor1);
+      SmartDashboard.putNumber("BUS Voltage", rightMotor1.getBusVoltage());
+      SmartDashboard.putNumber("Motor Output", rightMotor1.getMotorOutputPercent());
+      SmartDashboard.putNumber("Motor Voltage", rightMotor1.getMotorOutputVoltage());
+	}
 	// public boolean isEncoderOn() {
 	// 	if(this.rightMotor1.)
 	// }
+
+	public void runCollisionDetection() {
+		double curr_world_linear_accel_x = Robot.navX.getWorldLinearAccelX();
+		currentJerkX = curr_world_linear_accel_x - last_world_linear_accel_x;
+		last_world_linear_accel_x = curr_world_linear_accel_x;
+		double curr_world_linear_accel_y = Robot.navX.getWorldLinearAccelY();
+		currentJerkY = curr_world_linear_accel_y - last_world_linear_accel_y;
+		last_world_linear_accel_y = curr_world_linear_accel_y;
+		// double curr_world_linear_accel_z = Robot.navX.getWorldLinearAccelZ();
+		// currentJerkZ = curr_world_linear_accel_z - last_world_linear_accel_z;
+		// last_world_linear_accel_z = curr_world_linear_accel_z;
+	}
+
+	public double getCurrentJerkX() {
+		return currentJerkX;
+	}
+
+	public double getCurrentJerkY() {
+		return currentJerkY;
+	}
 
 }

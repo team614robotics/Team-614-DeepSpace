@@ -76,7 +76,7 @@ public class Vision extends Subsystem {
 		// distance = 5.34 * Math.pow(0.966, getArea());
 
 		// PowReg() = 4.73 * ta ^ -.340
-		// distance = 4.73 * Math.pow(getArea(), -.340);
+		 distance = 4.73 * Math.pow(getArea(), -.340);
 
 		// QuadReg() = 0.0447 * ta * ta + -1.87 * ta + 7.43
 		// distance = 0.0447 * getArea() * getArea() + -1.87 * getArea() + 7.43;
@@ -85,7 +85,7 @@ public class Vision extends Subsystem {
 		// distance = 5.30 + -1.37 * Math.log(getArea());
 
         // distance *= 12;4
-        distance = (31.5-21.5)/Math.tan(Math.toRadians(getY()));
+        //distance = (31.5-21.5)/Math.tan(Math.toRadians(getY()));
         // distance = distance/Math.cos(Math.toRadians(getX()));
 		return distance;
 	}

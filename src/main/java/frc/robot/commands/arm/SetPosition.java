@@ -36,14 +36,16 @@ public class SetPosition extends Command {
 		// 	Robot.arm.hawkTalonA.setSelectedSensorPosition(0);
 		// // }
 		// Robot.pneumatics.setBikebrakeState(RobotMap.PistonIn);
-		Robot.arm.hawkTalonA.configMotionAcceleration(500);
-		Robot.arm.hawkTalonA.configMotionCruiseVelocity(500);
+		
+		Robot.arm.hawkTalonA.configMotionCruiseVelocity(220);
+		Robot.arm.hawkTalonA.configMotionAcceleration(160);
 		Robot.arm.hawkTalonA.setSensorPhase(false);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.arm.hawkTalonA.set(ControlMode.MotionMagic, -400);
+		Robot.arm.setMotionMagic(-400);
+		Robot.arm.setMotionMagicArbFeedForward(-400, 0.25);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
