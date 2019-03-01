@@ -29,7 +29,7 @@ public class CompressorControl extends Command {
 	// Called just before this Command runs the first time
 
 	protected void initialize() {
-		Robot.pneumatics.compressor.start();
+		Robot.pneumatics.compressor.stop();
 
 	}
 
@@ -51,7 +51,7 @@ public class CompressorControl extends Command {
 
 			if (DriverStation.getInstance().getBatteryVoltage() >= 10.5) {
 
-				Robot.pneumatics.compressor.start();
+				Robot.pneumatics.compressor.stop();
 
 			}
 

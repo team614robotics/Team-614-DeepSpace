@@ -51,6 +51,7 @@ public class Pneumatics extends Subsystem {
 	}
 	public DoubleSolenoid.Value getBikebrakeState() {
 		return bikebrakePiston.get();
+		// return RobotMap.PistonIn;
 	}
 	public DoubleSolenoid.Value getUmbrellaState() {
 		return umbrellaPiston.get();

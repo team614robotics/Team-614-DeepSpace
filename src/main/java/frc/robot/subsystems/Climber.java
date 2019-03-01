@@ -23,9 +23,9 @@ public class Climber extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  public CANSparkMax sparkMaxC;
-  public CANSparkMax sparkMaxD;
-  public CANSparkMax sparkMaxF; //Unspooler
+  // public CANSparkMax sparkMaxC;
+  // public CANSparkMax sparkMaxD;
+  // public CANSparkMax sparkMaxF; //Unspooler
 
   // public Servo servoA = new Servo(RobotMap.dioServoPort1);
   // public Servo servoB = new Servo(RobotMap.dioServoPort2);
@@ -34,9 +34,9 @@ public class Climber extends Subsystem {
 
 
   public Climber() {
-    sparkMaxC = new CANSparkMax(RobotMap.sparkMaxC, MotorType.kBrushless);
-    sparkMaxD = new CANSparkMax(RobotMap.sparkMaxD, MotorType.kBrushless);
-    sparkMaxF = new CANSparkMax(RobotMap.sparkMaxF, MotorType.kBrushed);
+    // sparkMaxC = new CANSparkMax(RobotMap.sparkMaxC, MotorType.kBrushless);
+    // sparkMaxD = new CANSparkMax(RobotMap.sparkMaxD, MotorType.kBrushless);
+    // sparkMaxF = new CANSparkMax(RobotMap.sparkMaxF, MotorType.kBrushed);
   }
   @Override
   public void initDefaultCommand() {
@@ -46,14 +46,14 @@ public class Climber extends Subsystem {
     // setServos(servoStart);
   }
   public void setSpeedA(double speed) {
-      sparkMaxC.set(speed);
+      // sparkMaxC.set(speed);
   }
   public void setSpeedBoth(double speed) {
-      sparkMaxC.set(speed);
-      sparkMaxD.set(speed);
+      // sparkMaxC.set(speed);
+      // sparkMaxD.set(speed);
   }
   public void spool(double speed) {
-      sparkMaxF.set(speed);
+      // sparkMaxF.set(speed);
   }
   // public void setServos(double value) {
   //   servoA.set(value);

@@ -16,7 +16,6 @@ import com.ctre.phoenix.motion.TrajectoryPoint;
 
 
 public class ProfileCommand {
-
     private MotionProfileStatus _status = new MotionProfileStatus();
     
 	double _pos=0;
@@ -139,11 +138,8 @@ public class ProfileCommand {
 			double positionRot = profile[i][0];
 
 			double velocityRPM = profile[i][1];
-
-			/* for each point, fill our structure and pass it to API */
-
 			point.position = positionRot * (Robot.drivetrain.unitsPerInch * 12); //Convert Revolutions to Units
-			point.velocity = velocityRPM * (Robot.drivetrain.unitsPerInch * 12) / 10.0; //Convert RPM to Units/100ms
+			point.velocity = (velocityRPM * (Robot.drivetrain.unitsPerInch * 12)); //Convert RPM to Units/100ms
 			point.headingDeg = 0; /* future feature - not used in this example*/
 			point.profileSlotSelect0 = 0; /* which set of gains would you like to use [0,3]? */
 			point.profileSlotSelect1 = 0; /* future feature  - not used in this example - cascaded PID [0,1], leave zero */

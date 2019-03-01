@@ -8,7 +8,7 @@ import frc.lib.*;
 public class Profile {
     private double[][] pointData;
     private TrajPointReading profile;
-    private double driveTicksPerFoot;
+    private double driveTicksPerInch = 0.0001;
     public Profile(double[][] pointData) {
         this.pointData = pointData;
     }
@@ -19,8 +19,8 @@ public class Profile {
              System.err.println("Error | Attempted to get a point that shouldn't exist");
              return null;
          }
-         point.position = driveTicksPerFoot * pointData[index][0];
-         point.velocity = (driveTicksPerFoot * pointData[index][1]);
+         point.position = (driveTicksPerInch * 12) * pointData[index][0];
+         point.velocity = ((driveTicksPerInch * 12) * pointData[index][1]);
         //  point.auxiliaryVel = pointData[index][3] * 0.25;
          point.profileSlotSelect0 = 0;
          point.profileSlotSelect1 = 0;

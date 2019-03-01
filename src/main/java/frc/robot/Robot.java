@@ -56,7 +56,7 @@ import frc.robot.subsystems.Vision;
 
 public class Robot extends TimedRobot {
 
-	// public static PowerDistributionPanel pdp;
+	public static PowerDistributionPanel pdp;
 	public static AHRS navX;
 
 	// public static Drivetrain drivetrain;
@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
 
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
-	private DigitalInput limit;
+	public static DigitalInput limit;
 	private boolean rumbling = false;
 	private int ticks = 10;
 
@@ -113,7 +113,7 @@ public class Robot extends TimedRobot {
 		oi = new OI();
 
 		// pdp = new PowerDistributionPanel();
-		// limit = new DigitalInput(4);
+		limit = new DigitalInput(0);
 
 		// SmartDashboard.putBoolean("SetSpeedBoth", false);
 		// SmartDashboard.putNumber("SpeedArm", 0.5);
@@ -130,6 +130,14 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Feed Forward", 0.1);
 		SmartDashboard.putNumber("Spool Speed", 0.5);
 		SmartDashboard.putNumber("Intake Speed", 0.7);
+		SmartDashboard.putBoolean("Limit Switch Value", limit.get());
+		SmartDashboard.putNumber("Right Set Value", 0);
+		SmartDashboard.putNumber("Left Set Value", 0);
+		SmartDashboard.putNumber("Right Error: ", 0);
+		SmartDashboard.putNumber("Left  Error: ", 0);
+		SmartDashboard.putNumber("Right Encoder Ticks: ", Robot.drivetrain.rightMotor1.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Left Encoder Ticks: ", Robot.drivetrain.leftMotor1.getSelectedSensorPosition(0));
+		
 		// Robot.pneumatics.setBikebrakeState(RobotMap.PistonIn);
 
 		// chooser.setDefaultOption("Default Auto", new Command());
@@ -146,6 +154,8 @@ public class Robot extends TimedRobot {
 
 		// SmartDashboard.putNumber("Drivetrain Left Encoder Get",
 		// drivetrain.leftEncoder.get());
+		SmartDashboard.putBoolean("Controller Value", Math.abs(-OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft)) < 0.003);
+		SmartDashboard.putBoolean("PistonOut", false);
 	}
 
 	/**
@@ -176,6 +186,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Limelight Area", vision.getArea());
 		SmartDashboard.putNumber("Joystick Value Left", OI.driverController.getY(Hand.kLeft));
 		SmartDashboard.putNumber("Joystick Value Right", OI.driverController.getX(Hand.kRight));
+		SmartDashboard.putBoolean("Limit Switch Value", limit.get());
+		SmartDashboard.putBoolean("Controller Value", Math.abs(-OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft)) < 0.003);
 
 		// SmartDashboard.putBoolean("Beak Is Open", limit.get());
 

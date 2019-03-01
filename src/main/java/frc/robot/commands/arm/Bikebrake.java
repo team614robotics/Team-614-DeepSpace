@@ -21,17 +21,12 @@ public class Bikebrake extends Command {
 	public Bikebrake() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
-		requires(Robot.pneumatics);
+		requires(Robot.arm);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		if(Robot.pneumatics.getBikebrakeState().equals(RobotMap.PistonIn)) {
-			Robot.pneumatics.setBikebrakeState(RobotMap.PistonOut);
-		}
-		else {
-            Robot.pneumatics.setBikebrakeState(RobotMap.PistonIn);
-		}
+		
 	}
 
 	// Called repeatedly when this Command is scheduled to run

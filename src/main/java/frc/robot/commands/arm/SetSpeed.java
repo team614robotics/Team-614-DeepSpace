@@ -20,10 +20,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class SetSpeed extends Command {
 	double pastState = -1;
+	double timer;
 	public SetSpeed() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.arm);
+		
 	}
 
 	// Called just before this Command runs the first time
@@ -44,8 +46,16 @@ public class SetSpeed extends Command {
         //     Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonOut);
 		// }
 		Robot.arm.set(-OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft), 0);
-		// pastState = -OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft);
+
+	    SmartDashboard.putBoolean("PistonOut", Math.abs(-OI.driverController.getTriggerAxis(Hand.kRight) +
+		OI.driverController.getTriggerAxis(Hand.kLeft)) > 0.003 ? false : (Robot.limit.get() ? true : false));
+		
+	    Robot.pneumatics.bikebrakePiston.set(Math.abs(-OI.driverController.getTriggerAxis(Hand.kRight) +
+		OI.driverController.getTriggerAxis(Hand.kLeft)) > 0.003 ? RobotMap.PistonIn : (Robot.limit.get() ? RobotMap.PistonOut : RobotMap.PistonIn));
 	}
+
+	// pastState = -OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft);
+
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {

@@ -28,6 +28,7 @@ import frc.lib.CreateNewPath;
 import frc.robot.commands.climber.*;
 import frc.robot.commands.arm.*;
 import frc.robot.commands.intake.*;
+import frc.robot.motionprofile.DriveTracker;
 import frc.robot.commands.drivetrain.DriveToHatchPanel;
 import frc.robot.commands.drivetrain.DriveForADistance;
 import frc.robot.commands.drivetrain.DriveToCargo;
@@ -146,6 +147,6 @@ public class OI {
 		unlockBikebrake.whenPressed(new UnlockBikebrake()); // B
 		lockBikebrake.whenPressed(new LockBikebrake()); // A	
 		frontPistons.whenPressed(new FrontPistons()); // X
-		backPistons.whenPressed(new BackPistons()); // Y
+		backPistons.whenPressed(new DriveTracker(CreateNewPath.pathLeft, CreateNewPath.pathRight)); // Y
 	}
 }

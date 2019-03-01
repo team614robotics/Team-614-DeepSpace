@@ -47,6 +47,7 @@ public class DriveTracker extends Command {
 		Robot.drivetrain.getLeftTalon().set(ControlMode.MotionProfile, leftHandler.getSetValue().value);
 		Robot.drivetrain.getLeftSlaveVictor().follow(Robot.drivetrain.getLeftTalon());
 
+		
     	SmartDashboard.putNumber("Right Error: ", Robot.drivetrain.getRightTalon().getClosedLoopError(0));
     	SmartDashboard.putNumber("Left  Error: ", Robot.drivetrain.getRightTalon().getClosedLoopError(0));
     }
