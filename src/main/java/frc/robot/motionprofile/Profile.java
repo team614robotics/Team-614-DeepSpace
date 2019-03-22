@@ -9,8 +9,10 @@ public class Profile {
     private double[][] pointData;
     private TrajPointReading profile;
     private double driveTicksPerInch = 0.0001;
+
     public Profile(double[][] pointData) {
         this.pointData = pointData;
+        // Robot.drivetrain.rightMotsetSensorPhase();
     }
     
     public TrajectoryPoint getPoint(int index) {

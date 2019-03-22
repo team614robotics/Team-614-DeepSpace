@@ -35,13 +35,18 @@ public class Intake extends Subsystem {
   // here. Call these from Commands.
 
   // One Intake Motor, simple speed 
- public CANSparkMax sparkMaxE;
+ public CANSparkMax sparkMaxE, sparkMaxF;
+ public CANPIDController pidController1, pidController2;
   // public CANSparkMax sparkMaxF;
   // private CANEncoder encoderA;
   // private CANEncoder encoderB;
+  
 
  public Intake() {
-  sparkMaxE = new CANSparkMax(RobotMap.sparkMaxE, MotorType.kBrushed);
+  sparkMaxE = new CANSparkMax(0, MotorType.kBrushless);
+  sparkMaxF = new CANSparkMax(RobotMap.sparkMaxF, MotorType.kBrushless);
+  pidController1 = new CANPIDController(sparkMaxE);
+  pidController2 = new CANPIDController(sparkMaxF);
  }
   
   @Override
@@ -51,12 +56,33 @@ public class Intake extends Subsystem {
     // setDefaultCommand(new SetSpeed());
  }
 
+ public void resetSparkMax() {
+    sparkMaxE.restoreFactoryDefaults();
+    sparkMaxE = new CANSparkMax(RobotMap.sparkMaxE, MotorType.kBrushless);   
+ }
+
  public void runIntake(double speed) {
     sparkMaxE.set(speed);
  }
 
  public void runOutake(double speed) {
     sparkMaxE.set(-speed);
+ }
+
+ public void runPositionalPIDLeft(double target) {
+   pidController1.setP(0.4);
+   pidController1.setI(0.0012);
+   pidController1.setD(0.001);
+   pidController1.setOutputRange(-1, 1);
+   pidController1.setReference(target, ControlType.kPosition);
+ }
+
+ public void runPositionalPIDRight(double target) {
+   pidController2.setP(0.4);
+   pidController2.setI(0.0012);
+   pidController2.setD(0.001);
+   pidController2.setOutputRange(-1, 1);
+   pidController2.setReference(target, ControlType.kPosition);
  }
 }
 

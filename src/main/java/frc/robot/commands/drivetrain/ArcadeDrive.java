@@ -29,7 +29,8 @@ public class ArcadeDrive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.drivetrain.arcadeDrive(OI.driverController.getY(Hand.kLeft), -OI.driverController.getX(Hand.kRight));
+		Robot.drivetrain.arcadeDrive(OI.driverController.getY(Hand.kLeft), 0);
+		Robot.drivetrain.turnBackMotors(OI.driverController.getY(Hand.kRight));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

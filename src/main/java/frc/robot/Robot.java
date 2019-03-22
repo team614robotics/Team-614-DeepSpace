@@ -13,6 +13,7 @@
 package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -56,7 +57,8 @@ import frc.robot.subsystems.Vision;
 
 public class Robot extends TimedRobot {
 
-	public static PowerDistributionPanel pdp;
+	// public static PowerDistributionPanel pdp;
+
 	public static AHRS navX;
 
 	// public static Drivetrain drivetrain;
@@ -137,6 +139,13 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Left  Error: ", 0);
 		SmartDashboard.putNumber("Right Encoder Ticks: ", Robot.drivetrain.rightMotor1.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Left Encoder Ticks: ", Robot.drivetrain.leftMotor1.getSelectedSensorPosition(0));
+
+		SmartDashboard.putNumber("Output: ", 0);
+        SmartDashboard.putNumber("Time?: ", 0);
+        SmartDashboard.putNumber("Profile duration?: ", 0);
+        SmartDashboard.putNumber("Encoder Position: ",  0);
+        SmartDashboard.putNumber("How close to target: ",  0);
+        SmartDashboard.putBoolean("Is it timed out: ", false);
 		
 		// Robot.pneumatics.setBikebrakeState(RobotMap.PistonIn);
 
@@ -156,6 +165,7 @@ public class Robot extends TimedRobot {
 		// drivetrain.leftEncoder.get());
 		SmartDashboard.putBoolean("Controller Value", Math.abs(-OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft)) < 0.003);
 		SmartDashboard.putBoolean("PistonOut", false);
+		SmartDashboard.putBoolean("LimitSwitch: ", limit.get());
 	}
 
 	/**
@@ -188,22 +198,20 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Joystick Value Right", OI.driverController.getX(Hand.kRight));
 		SmartDashboard.putBoolean("Limit Switch Value", limit.get());
 		SmartDashboard.putBoolean("Controller Value", Math.abs(-OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft)) < 0.003);
-
 		// SmartDashboard.putBoolean("Beak Is Open", limit.get());
 
-		// if (pdp.getCurrent(0) > 30 || rumbling) {
+		// if (pdp.getCurrent(14) > 33 || rumbling) {
+		// 	ticks = rumbling == false ?  15 : ticks;
+			
 		// 	rumbling = true;
-		// 	vision.setLED(2);
-
 		// 	OI.driverController.setRumble(RumbleType.kLeftRumble, 1);
 		// 	OI.driverController.setRumble(RumbleType.kRightRumble, 1);
-		// 	--ticks;
+		// 	// vision.setLED(2);
 
-		// 	if (ticks <= 0) {
-		// 		rumbling = false;
-		// 	}
+		// 	--ticks;
+		// 	rumbling = ticks <= 0 ? false : true;
 		// } else {
-		// 	vision.setLED(0);
+		// 	// vision.setLED(0);
 		// 	ticks = 15;
 
 		// 	OI.driverController.setRumble(RumbleType.kLeftRumble, 0);
@@ -371,7 +379,11 @@ public class Robot extends TimedRobot {
 		Robot.arm.hawkTalonA
 				.setConfig(new SRXPID(SmartDashboard.getNumber("Arm F", 0), SmartDashboard.getNumber("Arm P", 0),
 						SmartDashboard.getNumber("Arm I", 0), SmartDashboard.getNumber("Arm D", 0)), 0);
-		SmartDashboard.putNumber("Encoder", Robot.arm.hawkTalonA.getSelectedSensorPosition());
+		SmartDashboard.putNumber("Encoder", Robot.intake.sparkMaxE.getEncoder().getPosition());
+		SmartDashboard.putNumber("Error: ", 0);
+		SmartDashboard.putNumber("Velocity: ", 0);
+		SmartDashboard.putBoolean("Limit Switch: ", limit.get());
+
 		// SmartDashboard.putNumber("Applied Output",
 		// Robot.arm.sparkMaxA.getAppliedOutput());
 		// SmartDashboard.putNumber("Bus Voltage", Robot.arm.sparkMaxA.getBusVoltage());

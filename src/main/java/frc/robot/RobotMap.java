@@ -47,11 +47,11 @@ public class RobotMap {
 
 	// MOTOR CONTROLLERS
 
-	public static final int leftMotorA = 2; // LDrive
+	public static final int leftMotorA = 9; // LDrive
 	public static final int leftMotorB = 1;
 
-	public static final int rightMotorA = 3; // RDrive
-	public static final int rightMotorB = 0;
+	public static final int rightMotorA = 2; // RDrive
+	public static final int rightMotorB = 3;
 
 	public static final int sparkMaxA = 5; // Arm
 	public static final int sparkMaxB = 6;
@@ -59,7 +59,7 @@ public class RobotMap {
 	public static final int sparkMaxC = 7; // Intake
 	public static final int sparkMaxD = 8;
 
-	public static final int sparkMaxE = 9; // Climber
+	public static final int sparkMaxE = 0; // Climber
 	public static final int sparkMaxF = 10;
 
 	// DRIVETRAIN CONSTANTS

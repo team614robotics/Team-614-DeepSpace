@@ -30,9 +30,12 @@ import frc.robot.commands.arm.*;
 import frc.robot.commands.intake.*;
 import frc.robot.motionprofile.DriveTracker;
 import frc.robot.commands.drivetrain.DriveToHatchPanel;
+// import frc.robot.commands.drivetrain.ClimberStatus;
 import frc.robot.commands.drivetrain.DriveForADistance;
 import frc.robot.commands.drivetrain.DriveToCargo;
 import frc.robot.commands.drivetrain.DriveToTarget;
+import frc.robot.commands.drivetrain.KeepState;
+// import frc.robot.commands.drivetrain.MotionProfiling;
 /**
  * 
  * This class is the glue that binds the controls on the physical operator
@@ -87,34 +90,35 @@ public class OI {
 
 	// button.whenReleased(new ExampleCommand());
 
+	// Controller Buttons
 	public static final int AButton = 1;
-
 	public static final int BButton = 2;
-
 	public static final int XButton = 3;
-
 	public static final int YButton = 4;
 
+	// Bumpers
 	public static final int LeftBumper = 5;
-
 	public static final int RightBumper = 6;
 
+	// Start & Back Buttons
 	public static final int BackButton = 7;
-
 	public static final int StartButton = 8;
 
+	// Sticks
 	public static final int LeftStick = 9;
 	public static final int RightStick = 10;
 
+	// Controllers
 	public static final XboxController driverController = new XboxController(0);
 	public static final XboxController operatorController = new XboxController(2);
 
+
+	// --- Commands ---
 	public static final Button clamper = new JoystickButton(operatorController, YButton);
 	public static final Button setSpeedSpooler = new JoystickButton(operatorController, BButton);
 	
 	public static final Button armBikeBrake = new JoystickButton(driverController, XButton);
 	public static final Button setPosition = new JoystickButton(driverController, AButton);
-
 
 	public static final Button revOutake = new JoystickButton(driverController, BButton);
 	public static final Button revIntake = new JoystickButton(driverController, RightBumper);
@@ -126,6 +130,7 @@ public class OI {
 	public static final Button lockBikebrake = new JoystickButton(operatorController, AButton);
 	public static final Button frontPistons = new JoystickButton(operatorController, XButton);
 	public static final Button backPistons = new JoystickButton(operatorController, YButton);
+	// ---------------
 
 
 
@@ -134,7 +139,6 @@ public class OI {
 		// Unspool.whileHeld(new SetSpeed());
 		// clamper.whenPressed(new Clamper());
 		// setSpeedSpooler.whileHeld(new SetSpeedSpooler());
-		
 		// armBikeBrake.whenPressed(new Bikebrake());
 
 		// Driver Controller
@@ -146,7 +150,7 @@ public class OI {
 		// Operator Controller
 		unlockBikebrake.whenPressed(new UnlockBikebrake()); // B
 		lockBikebrake.whenPressed(new LockBikebrake()); // A	
-		frontPistons.whenPressed(new FrontPistons()); // X
-		backPistons.whenPressed(new DriveTracker(CreateNewPath.pathLeft, CreateNewPath.pathRight)); // Y
+		frontPistons.whileHeld(new KeepState(0)); // X
+		backPistons.whileHeld(new KeepState(90)); // Y
 	}
 }

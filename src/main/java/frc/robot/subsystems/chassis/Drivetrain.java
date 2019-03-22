@@ -18,11 +18,14 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.StickyFaults;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.VictorSP;
 
 public class Drivetrain extends Subsystem implements PIDOutput{
 	PIDController turnController;
@@ -30,11 +33,16 @@ public class Drivetrain extends Subsystem implements PIDOutput{
 	public boolean turnPID;
 	public static final int timeout = 10;
 
-	public HawkTalons leftMotor1  = new HawkTalons(RobotMap.leftMotorA);
-	public WPI_VictorSPX leftMotor2  = new WPI_VictorSPX(RobotMap.leftMotorB);
+	
+	public HawkTalons leftMotor1  = new HawkTalons(9);
+	public WPI_VictorSPX leftMotor2  = new WPI_VictorSPX(10);
 
-	public HawkTalons rightMotor1 = new HawkTalons(RobotMap.rightMotorA);
-	public WPI_VictorSPX rightMotor2 = new WPI_VictorSPX(RobotMap.rightMotorB);
+	public HawkTalons rightMotor1 = new HawkTalons(11);
+	public WPI_VictorSPX rightMotor2 = new WPI_VictorSPX(12);
+
+	public CANSparkMax canSparkMaxA = new CANSparkMax(0, MotorType.kBrushless);
+	public CANSparkMax canSparkMaxB = new CANSparkMax(1, MotorType.kBrushless);
+	public CANSparkMax canSparkMaxC = new CANSparkMax(2, MotorType.kBrushless);
 
 	private DifferentialDrive drive = new DifferentialDrive(leftMotor1, rightMotor1);
 
@@ -66,6 +74,7 @@ public class Drivetrain extends Subsystem implements PIDOutput{
 		turnController.setContinuous(true);
 		// leftMotor1.setInverted(true);
 		// leftMotor2.setInverted(true);
+		
 	}
 
 	public void setUsingTurnPID(boolean set) {
@@ -113,8 +122,17 @@ public class Drivetrain extends Subsystem implements PIDOutput{
 	}
 
 	public void arcadeDrive(double speed, double rotate) {
+
 		drive.arcadeDrive(speed, rotate);
+		canSparkMaxA.set(speed);
+		canSparkMaxB.setInverted(true);
+		canSparkMaxB.set(speed);
 	}
+
+	public void turnBackMotors(double speed) {
+		canSparkMaxC.set(speed);
+	}
+
 
 	public void profileDrive(double left, double right) {
 		leftMotor1.set(left);
