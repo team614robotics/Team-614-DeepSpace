@@ -18,6 +18,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.StickyFaults;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,35 +31,55 @@ public class Drivetrain extends Subsystem implements PIDOutput{
 	private double rotateToAngle;
 	public boolean turnPID;
 	public static final int timeout = 10;
+    
+	public CANSparkMax leftMotorA;
+	public CANSparkMax leftMotorB;
+	public CANSparkMax rightMotorA;
+	public CANSparkMax rightMotorB;
 
-	public HawkTalons leftMotor1  = new HawkTalons(RobotMap.leftMotorA);
-	public WPI_VictorSPX leftMotor2  = new WPI_VictorSPX(RobotMap.leftMotorB);
+	// public HawkTalons leftMotor1  = new HawkTalons(RobotMap.leftMotorA);
+	// public WPI_VictorSPX leftMotor2  = new WPI_VictorSPX(RobotMap.leftMotorB);
 
-	public HawkTalons rightMotor1 = new HawkTalons(RobotMap.rightMotorA);
-	public WPI_VictorSPX rightMotor2 = new WPI_VictorSPX(RobotMap.rightMotorB);
+	// public HawkTalons rightMotor1 = new HawkTalons(RobotMap.rightMotorA);
+	// public WPI_VictorSPX rightMotor2 = new WPI_VictorSPX(RobotMap.rightMotorB);
 
-	private DifferentialDrive drive = new DifferentialDrive(leftMotor1, rightMotor1);
+	// private DifferentialDrive drive = new DifferentialDrive(leftMotor1, rightMotor1);
+
+	private DifferentialDrive drivetrain;
 
 	public static final double unitsPerInch = 1000; //No
 	
-		public final double distanceTolerance = 0.1f;
+	public final double distanceTolerance = 0.1f;
+
 	public double last_world_linear_accel_x;
 	public double last_world_linear_accel_y;
 	public double last_world_linear_accel_z;
+
 	public double currentJerkX;
 	public double currentJerkY;
 	public double currentJerkZ;
 
 	public Drivetrain() {
 		turnPID = false;
-		leftMotor1.setInverted(true);
-		rightMotor1.setInverted(true);
-		leftMotor2.setInverted(true);
-		rightMotor2.setInverted(true);
-		drive.setSafetyEnabled(false);
-		this.configTalons();
-		leftMotor2.follow(leftMotor1);
-		rightMotor2.follow(rightMotor1);
+		// leftMotor1.setInverted(true);
+		// rightMotor1.setInverted(true);
+		// leftMotor2.setInverted(true);
+		// rightMotor2.setInverted(true);
+		// drive.setSafetyEnabled(false);
+		// this.configTalons();
+		// leftMotor2.follow(leftMotor1);
+		// rightMotor2.follow(rightMotor1);
+
+		leftMotorA = new CANSparkMax(0, MotorType.kBrushless);
+        leftMotorB = new CANSparkMax(1, MotorType.kBrushless);
+        rightMotorA = new CANSparkMax(2, MotorType.kBrushless);
+		rightMotorB = new CANSparkMax(3, MotorType.kBrushless);
+		drivetrain = new DifferentialDrive(leftMotorA, rightMotorA);
+		leftMotorA.setInverted(true);
+		rightMotorA.setInverted(true);
+		leftMotorB.follow(leftMotorA);
+		rightMotorB.follow(rightMotorA);
+
 		turnController = new PIDController(RobotMap.turnP, RobotMap.turnI,
 				RobotMap.turnD, RobotMap.turnF, Robot.navX, this);
 		turnController.setInputRange(-180, 180);
@@ -108,119 +130,121 @@ public class Drivetrain extends Subsystem implements PIDOutput{
 	}
 	@Override
 	public void initDefaultCommand() {
-		setDefaultCommand(new ArcadeDrive());
-		
+		setDefaultCommand(new ArcadeDrive());	
 	}
 
 	public void arcadeDrive(double speed, double rotate) {
-		drive.arcadeDrive(speed, rotate);
+		drivetrain.arcadeDrive(speed, rotate);
+		
+		leftMotorB.follow(leftMotorA);
+		rightMotorB.follow(rightMotorA);
 	}
 
-	public void profileDrive(double left, double right) {
-		leftMotor1.set(left);
-		leftMotor2.set(left);
+	// public void profileDrive(double left, double right) {
+	// 	leftMotor1.set(left);
+	// 	leftMotor2.set(left);
 
-		rightMotor1.set(right);
-		rightMotor2.set(right);
-	}
+	// 	rightMotor1.set(right);
+	// 	rightMotor2.set(right);
+	// }
 
-	public HawkTalons getRightTalon() {
-		return this.rightMotor1;
-	}
+	// public HawkTalons getRightTalon() {
+	// 	return this.rightMotor1;
+	// }
 
-	public WPI_VictorSPX getRightSlaveVictor() {
-		return this.rightMotor2;
-	}
+	// public WPI_VictorSPX getRightSlaveVictor() {
+	// 	return this.rightMotor2;
+	// }
 
-	public HawkTalons getLeftTalon() {
-		return this.leftMotor1;
-	}
+	// public HawkTalons getLeftTalon() {
+	// 	return this.leftMotor1;
+	// }
 
-	public WPI_VictorSPX getLeftSlaveVictor() {
-		return this.leftMotor2;
-	}
+	// public WPI_VictorSPX getLeftSlaveVictor() {
+	// 	return this.leftMotor2;
+	// }
 
-	public void configTalons() {
+	// public void configTalons() {
 
-		// RIGHT MOTOR CONFIG
-		rightMotor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-		rightMotor1.setSensorPhase(false); /* keep sensor and motor in phase */
-		rightMotor1.configNeutralDeadband(0.001, timeout);
-		rightMotor1.configNominalOutputForward(0, timeout);
-		rightMotor1.configNominalOutputReverse(0, timeout);
-		rightMotor1.configPeakOutputForward(1, timeout);
-		rightMotor1.configPeakOutputReverse(-1, timeout);
-        // --
-		rightMotor1.setConfig(new SRXPID(RobotMap.distF, RobotMap.distP, RobotMap.distI, RobotMap.distD), 0); //Tune later on
-		rightMotor1.setConfig(RobotMap.turnGains, 1);
-		rightMotor1.configMotionProfileTrajectoryPeriod(10, timeout); 
-		rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 20, timeout);
-		rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20, timeout);
-		rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, 20, timeout);
-		rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_10_Targets, 10, timeout);
-		rightMotor1.configMotionCruiseVelocity(100, timeout);
-		rightMotor1.configMotionAcceleration(100, timeout);
+	// 	// RIGHT MOTOR CONFIG
+	// 	rightMotor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+	// 	rightMotor1.setSensorPhase(false); /* keep sensor and motor in phase */
+	// 	rightMotor1.configNeutralDeadband(0.001, timeout);
+	// 	rightMotor1.configNominalOutputForward(0, timeout);
+	// 	rightMotor1.configNominalOutputReverse(0, timeout);
+	// 	rightMotor1.configPeakOutputForward(1, timeout);
+	// 	rightMotor1.configPeakOutputReverse(-1, timeout);
+    //     // --
+	// 	rightMotor1.setConfig(new SRXPID(RobotMap.distF, RobotMap.distP, RobotMap.distI, RobotMap.distD), 0); //Tune later on
+	// 	rightMotor1.setConfig(RobotMap.turnGains, 1);
+	// 	rightMotor1.configMotionProfileTrajectoryPeriod(10, timeout); 
+	// 	rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 20, timeout);
+	// 	rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20, timeout);
+	// 	rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, 20, timeout);
+	// 	rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_10_Targets, 10, timeout);
+	// 	rightMotor1.configMotionCruiseVelocity(100, timeout);
+	// 	rightMotor1.configMotionAcceleration(100, timeout);
 
-		// LEFT MOTOR CONFIG
-		leftMotor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-		leftMotor1.setSensorPhase(false); /* keep sensor and motor in phase */
-		leftMotor1.configNeutralDeadband(0.01, timeout);
-		leftMotor1.configNominalOutputForward(0, timeout);
-		leftMotor1.configNominalOutputReverse(0, timeout);
-		leftMotor1.configPeakOutputForward(1, timeout);
-		leftMotor1.configPeakOutputReverse(-1, timeout);
-        // --
-		leftMotor1.setConfig(new SRXPID(RobotMap.distF, RobotMap.distP, RobotMap.distI, RobotMap.distD), 0); //Tune later on
-		leftMotor1.setConfig(RobotMap.turnGains, 1);
-		leftMotor1.config_IntegralZone(0, RobotMap.distIZone);
-		leftMotor1.config_IntegralZone(1, RobotMap.turnIZone);
-		leftMotor1.configClosedLoopPeakOutput(0, RobotMap.distPeakOutput);
-		leftMotor1.configClosedLoopPeakOutput(1, RobotMap.turnPeakOutput);
-		leftMotor1.configMotionProfileTrajectoryPeriod(10, timeout); 
-		leftMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, timeout);
-		leftMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, timeout);
-		rightMotor1.configAuxPIDPolarity(false, timeout);
-	}
+	// 	// LEFT MOTOR CONFIG
+	// 	leftMotor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+	// 	leftMotor1.setSensorPhase(false); /* keep sensor and motor in phase */
+	// 	leftMotor1.configNeutralDeadband(0.01, timeout);
+	// 	leftMotor1.configNominalOutputForward(0, timeout);
+	// 	leftMotor1.configNominalOutputReverse(0, timeout);
+	// 	leftMotor1.configPeakOutputForward(1, timeout);
+	// 	leftMotor1.configPeakOutputReverse(-1, timeout);
+    //     // --
+	// 	leftMotor1.setConfig(new SRXPID(RobotMap.distF, RobotMap.distP, RobotMap.distI, RobotMap.distD), 0); //Tune later on
+	// 	leftMotor1.setConfig(RobotMap.turnGains, 1);
+	// 	leftMotor1.config_IntegralZone(0, RobotMap.distIZone);
+	// 	leftMotor1.config_IntegralZone(1, RobotMap.turnIZone);
+	// 	leftMotor1.configClosedLoopPeakOutput(0, RobotMap.distPeakOutput);
+	// 	leftMotor1.configClosedLoopPeakOutput(1, RobotMap.turnPeakOutput);
+	// 	leftMotor1.configMotionProfileTrajectoryPeriod(10, timeout); 
+	// 	leftMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, timeout);
+	// 	leftMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, timeout);
+	// 	rightMotor1.configAuxPIDPolarity(false, timeout);
+	// }
 
 
 
-	public double getDistanceMoved() { //Note: right is negative as forward is the negative direction on the right side.
-		return (this.leftMotor1.getSelectedSensorPosition(0) + -this.rightMotor1.getSelectedSensorPosition(0)) / 2.0; //Fix maybe?
-	}
+	// public double getDistanceMoved() { //Note: right is negative as forward is the negative direction on the right side.
+	// 	return (this.leftMotor1.getSelectedSensorPosition(0) + -this.rightMotor1.getSelectedSensorPosition(0)) / 2.0; //Fix maybe?
+	// }
 
-	public double getLeftPos() {
-		return this.leftMotor1.getSelectedSensorPosition(0) / unitsPerInch;
-	}
+	// public double getLeftPos() {
+	// 	return this.leftMotor1.getSelectedSensorPosition(0) / unitsPerInch;
+	// }
 
-	public double getLeftVel() {
-		return this.leftMotor1.getSelectedSensorVelocity(0) / unitsPerInch;
-	}
+	// public double getLeftVel() {
+	// 	return this.leftMotor1.getSelectedSensorVelocity(0) / unitsPerInch;
+	// }
 
-	public double getRightPos() {
-		return this.rightMotor1.getSelectedSensorPosition(0) / unitsPerInch;
-	}
+	// public double getRightPos() {
+	// 	return this.rightMotor1.getSelectedSensorPosition(0) / unitsPerInch;
+	// }
 
-	public double getRightVel() {
-		return this.rightMotor1.getSelectedSensorVelocity(0) / unitsPerInch;
-	}
+	// public double getRightVel() {
+	// 	return this.rightMotor1.getSelectedSensorVelocity(0) / unitsPerInch;
+	// }
 
-	public void zeroSensors() {
-		this.rightMotor1.resetEncoder();
-		this.leftMotor1.resetEncoder();
-	}
+	// public void zeroSensors() {
+	// 	this.rightMotor1.resetEncoder();
+	// 	this.leftMotor1.resetEncoder();
+	// }
 	
-	public void resetSpeed() {
-		rightMotor1.setSpeed(0);
-		leftMotor1.setSpeed(0);
-	}
+	// public void resetSpeed() {
+	// 	rightMotor1.setSpeed(0);
+	// 	leftMotor1.setSpeed(0);
+	// }
 
-	public void straightDrive(double distance, double turn) {
-	  rightMotor1.set(ControlMode.MotionMagic, distance, DemandType.AuxPID, turn);
-	  leftMotor1.follow(leftMotor1);
-      SmartDashboard.putNumber("BUS Voltage", rightMotor1.getBusVoltage());
-      SmartDashboard.putNumber("Motor Output", rightMotor1.getMotorOutputPercent());
-      SmartDashboard.putNumber("Motor Voltage", rightMotor1.getMotorOutputVoltage());
-	}
+	// public void straightDrive(double distance, double turn) {
+	//   rightMotor1.set(ControlMode.MotionMagic, distance, DemandType.AuxPID, turn);
+	//   leftMotor1.follow(leftMotor1);
+    //   SmartDashboard.putNumber("BUS Voltage", rightMotor1.getBusVoltage());
+    //   SmartDashboard.putNumber("Motor Output", rightMotor1.getMotorOutputPercent());
+    //   SmartDashboard.putNumber("Motor Voltage", rightMotor1.getMotorOutputVoltage());
+	// }
 	// public boolean isEncoderOn() {
 	// 	if(this.rightMotor1.)
 	// }
@@ -244,5 +268,4 @@ public class Drivetrain extends Subsystem implements PIDOutput{
 	public double getCurrentJerkY() {
 		return currentJerkY;
 	}
-
 }

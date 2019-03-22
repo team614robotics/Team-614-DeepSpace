@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 
 import edu.wpi.first.wpilibj.command.Scheduler;
-
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -56,7 +56,7 @@ import frc.robot.subsystems.Vision;
 
 public class Robot extends TimedRobot {
 
-	public static PowerDistributionPanel pdp;
+	// public static PowerDistributionPanel pdp;
 	public static AHRS navX;
 
 	// public static Drivetrain drivetrain;
@@ -112,8 +112,9 @@ public class Robot extends TimedRobot {
 		pneumatics = new Pneumatics();
 		oi = new OI();
 
-		// pdp = new PowerDistributionPanel();
+		// LiveWindow.disableTelemetry(pdp);
 		limit = new DigitalInput(0);
+		// pdp = new PowerDistributionPanel(0);
 
 		// SmartDashboard.putBoolean("SetSpeedBoth", false);
 		// SmartDashboard.putNumber("SpeedArm", 0.5);
@@ -121,11 +122,12 @@ public class Robot extends TimedRobot {
 		// SmartDashboard.putNumber("Unspool", 0);
 		// SmartDashboard.putNumber("Feed Forward", 0.1);
 
+		// SmartDashboard.putNumber("Right Motor", Robot.drivetrain.rightMotor1.getSelectedSensorPosition());
 		SmartDashboard.putNumber("Arm P", 0.5);
 		SmartDashboard.putNumber("Arm I", 0);
 		SmartDashboard.putNumber("Arm D", 0.8);
 		SmartDashboard.putNumber("Arm F", 0);
-
+        SmartDashboard.putBoolean("Opposite State", Robot.pneumatics.getBikebrakeState().equals(RobotMap.PistonOut) && OI.driverController.getTriggerAxis(Hand.kLeft) > 0.1);
 		SmartDashboard.putNumber("Angle of Arm", 45);
 		SmartDashboard.putNumber("Feed Forward", 0.1);
 		SmartDashboard.putNumber("Spool Speed", 0.5);
@@ -135,9 +137,10 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Left Set Value", 0);
 		SmartDashboard.putNumber("Right Error: ", 0);
 		SmartDashboard.putNumber("Left  Error: ", 0);
-		SmartDashboard.putNumber("Right Encoder Ticks: ", Robot.drivetrain.rightMotor1.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("Left Encoder Ticks: ", Robot.drivetrain.leftMotor1.getSelectedSensorPosition(0));
-		
+		// SmartDashboard.putNumber("Right Encoder Ticks: ", Robot.drivetrain.rightMotor1.getSelectedSensorPosition(0));
+		// SmartDashboard.putNumber("Left Encoder Ticks: ", Robot.drivetrain.leftMotor1.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Arm Encoder Ticks: ", Robot.arm.hawkTalonA.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Multiplier", ((1920 - Robot.arm.getRawPosition()) / 1920) * OI.driverController.getTriggerAxis(Hand.kRight));
 		// Robot.pneumatics.setBikebrakeState(RobotMap.PistonIn);
 
 		// chooser.setDefaultOption("Default Auto", new Command());
@@ -186,24 +189,27 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Limelight Area", vision.getArea());
 		SmartDashboard.putNumber("Joystick Value Left", OI.driverController.getY(Hand.kLeft));
 		SmartDashboard.putNumber("Joystick Value Right", OI.driverController.getX(Hand.kRight));
-		SmartDashboard.putBoolean("Limit Switch Value", limit.get());
+		SmartDashboard.putBoolean("Limit Switch Value", !limit.get());
 		SmartDashboard.putBoolean("Controller Value", Math.abs(-OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft)) < 0.003);
-
+		SmartDashboard.putNumber("Arm Encoder Ticks: ", Robot.arm.hawkTalonA.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Multiplier", ((1920 - Robot.arm.getRawPosition()) / 1920) * OI.driverController.getTriggerAxis(Hand.kRight));
+		SmartDashboard.putNumber("Ticks", ticks);
+        // SmartDashboard.putNumber("Right Motor", Robot.drivetrain.rightMotor1.getSelectedSensorPosition());
 		// SmartDashboard.putBoolean("Beak Is Open", limit.get());
+		// LiveWindow.disableTelemetry(pdp);
+		// if (pdp.getCurrent(2) > 3 || rumbling) {
+		// 	ticks = rumbling == false ? 15 : ticks;
 
-		// if (pdp.getCurrent(0) > 30 || rumbling) {
 		// 	rumbling = true;
-		// 	vision.setLED(2);
+		// 	// vision.setLED(2);
 
 		// 	OI.driverController.setRumble(RumbleType.kLeftRumble, 1);
 		// 	OI.driverController.setRumble(RumbleType.kRightRumble, 1);
 		// 	--ticks;
 
-		// 	if (ticks <= 0) {
-		// 		rumbling = false;
-		// 	}
+		// 	rumbling = ticks <= 0 ? false : true;
 		// } else {
-		// 	vision.setLED(0);
+		// 	// vision.setLED(0);
 		// 	ticks = 15;
 
 		// 	OI.driverController.setRumble(RumbleType.kLeftRumble, 0);
@@ -244,8 +250,8 @@ public class Robot extends TimedRobot {
 
 		Robot.navX.reset();
 
-		drivetrain.zeroSensors();
-		drivetrain.resetSpeed();
+		// drivetrain.zeroSensors();
+		// drivetrain.resetSpeed();
 
 	}
 

@@ -39,29 +39,30 @@ public class DriveToTarget extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.drivetrain.runCollisionDetection();
+		// Robot.drivetrain.runCollisionDetection();
 		double c = Robot.vision.getX() < 0 ? -0.35 : 0.35;
-		double forward = Robot.vision.getDistance() * 0.0035 + 0.35;
-		Robot.drivetrain.arcadeDrive(0.0, (Robot.vision.getX() * 0.023) + c);
+		double forward = Math.abs(Robot.vision.getDistance() * 0.0035) + 0.35;
+		Robot.drivetrain.arcadeDrive(-0.5, -((Robot.vision.getX() * 0.023) + c));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		// return Robot.vision.getDistance() < 10;
-		return this.timeSinceInitialized() > 1.5 && (Math.abs(Robot.drivetrain.getCurrentJerkY()) > 0.6f
-				|| Math.abs(Robot.drivetrain.getCurrentJerkX()) > 0.6f);
+		// return this.timeSinceInitialized() > 1.5 && (Math.abs(Robot.drivetrain.getCurrentJerkY()) > 0.6f
+		// 		|| Math.abs(Robot.drivetrain.getCurrentJerkX()) > 0.6f);
+		return false;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.drivetrain.resetSpeed();
+		// Robot.drivetrain.resetSpeed();
 		Robot.vision.stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		Robot.drivetrain.resetSpeed();
+		// Robot.drivetrain.resetSpeed();
 		Robot.vision.stop();
 	}
 }

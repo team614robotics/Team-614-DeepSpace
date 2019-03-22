@@ -7,6 +7,8 @@
 
 package frc.robot.commands.arm;
 
+import com.revrobotics.CANDigitalInput.LimitSwitch;
+
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -21,6 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SetSpeed extends Command {
 	double pastState = -1;
 	double timer;
+	int encoderTicks = 1920;
 	public SetSpeed() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
@@ -30,6 +33,7 @@ public class SetSpeed extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -47,11 +51,56 @@ public class SetSpeed extends Command {
 		// }
 		Robot.arm.set(-OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft), 0);
 
-	    SmartDashboard.putBoolean("PistonOut", Math.abs(-OI.driverController.getTriggerAxis(Hand.kRight) +
-		OI.driverController.getTriggerAxis(Hand.kLeft)) > 0.003 ? false : (Robot.limit.get() ? true : false));
+
+		// // Accelerat
+		// if(Math.abs(-OI.driverController.getTriggerAxis(Hand.kRight)) > 0.1) {
+        //    Robot.arm.set(-OI.driverController.getTriggerAxis(Hand.kLeft), 0);
+		// }
+		// else if(Math.abs(OI.driverController.getTriggerAxis(Hand.kLeft)) > 0.1) {
+        //     Robot.arm.set(OI.driverController.getTriggerAxis(Hand.kLeft), 0);
+		// }
+		// else {
+		// 	Robot.arm.set(0, 0);
+		// }
+
+		// //Pneumatics
+		// if(Robot.pneumatics.getBikebrakeState().equals(RobotMap.PistonIn) && Robot.limit.get()) {
+		// 	Robot.pneumatics.setBikebrakeState(RobotMap.PistonOut);
+		// }
+		// else if(Robot.pneumatics.getBikebrakeState().equals(RobotMap.PistonOut) && Math.abs(OI.driverController.getTriggerAxis(Hand.kLeft)) > 0.1) {
+		// 	Robot.pneumatics.setBikebrakeState(RobotMap.PistonIn);
+		// }
+	    SmartDashboard.putBoolean("PistonOut", Math.abs(-OI.driverController.getTriggerAxis(Hand.kRight) + 
+
+		OI.driverController.getTriggerAxis(Hand.kLeft)) > 0.003 ? false : (!Robot.limit.get() ? true : false));
+
+	    // Robot.pneumatics.bikebrakePiston.set(Math.abs(-OI.driverController.getTriggerAxis(Hand.kRight) +
+		// OI.driverController.getTriggerAxis(Hand.kLeft)) > 0.003 ? RobotMap.PistonIn : 
+
+		// (!Robot.limit.get() ? RobotMap.PistonOut : (OI.driverController.getTriggerAxis(Hand.kLeft)) > 0.003 ? RobotMap.PistonIn : RobotMap.PistonOut));
+		// if(Robot.pneumatics.bikebrakePiston.get().equals(RobotMap.PistonIn) && Robot.limit.get()) {
+		// 	Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonOut);
+		// }
+		// if(OI.driverController.getTriggerAxis(Hand.kRight) != 0) {
+		// 	Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonIn);
+		// }
+		// else if(Robot.pneumatics.bikebrakePiston.get().equals(RobotMap.PistonIn) && Robot.limit.get() && !OI.operatorController.getAButtonPressed()) {
+		// 	Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonOut);
+		// }
+		// else if(!OI.operatorController.getAButtonPressed()) {
+        //     Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonIn);
+		// }
 		
-	    Robot.pneumatics.bikebrakePiston.set(Math.abs(-OI.driverController.getTriggerAxis(Hand.kRight) +
-		OI.driverController.getTriggerAxis(Hand.kLeft)) > 0.003 ? RobotMap.PistonIn : (Robot.limit.get() ? RobotMap.PistonOut : RobotMap.PistonIn));
+	   if(OI.driverController.getTriggerAxis(Hand.kRight) != 0 || OI.driverController.getTriggerAxis(Hand.kLeft) != 0) {
+			Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonIn);
+		}
+		else if(Robot.pneumatics.bikebrakePiston.get().equals(RobotMap.PistonIn) && !Robot.limit.get() && !OI.operatorController.getAButton()) {
+			Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonOut);
+		}
+		else if(OI.operatorController.getAButton()) {
+			Robot.pneumatics.bikebrakePiston.set(RobotMap.PistonIn);
+
+		}
 	}
 
 	// pastState = -OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft);

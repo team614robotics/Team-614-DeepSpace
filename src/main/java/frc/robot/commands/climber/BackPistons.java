@@ -28,10 +28,9 @@ public class BackPistons extends Command {
 	protected void initialize() {
 		if (Robot.pneumatics.getClamperAAState().equals(RobotMap.PistonIn)) {
 			Robot.pneumatics.setClamperAAState(RobotMap.PistonOut);
-			Robot.pneumatics.setClamperBBState(true);
 		} else {
 			Robot.pneumatics.setClamperAAState(RobotMap.PistonIn);
-			Robot.pneumatics.setClamperBBState(false);
+			
 
 		}
 	}
