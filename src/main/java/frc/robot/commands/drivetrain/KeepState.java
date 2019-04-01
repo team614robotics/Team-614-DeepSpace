@@ -53,7 +53,7 @@ public class KeepState extends Command {
         // Robot.intake.sparkMaxE.set(-output * 0.1216 + Math.cos(target) * 0.12); 
 
         Robot.intake.runPositionalPIDRight(this.target);
-        Robot.intake.runPositionalPIDLeft(this.target);
+        Robot.intake.runPositionalPIDLeft(-this.target);
 
         // PID VALUES -
         // 0.1216 kP

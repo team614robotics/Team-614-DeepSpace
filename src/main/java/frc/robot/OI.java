@@ -151,6 +151,6 @@ public class OI {
 		unlockBikebrake.whenPressed(new UnlockBikebrake()); // B
 		lockBikebrake.whenPressed(new LockBikebrake()); // A	
 		frontPistons.whileHeld(new KeepState(0)); // X
-		backPistons.whileHeld(new KeepState(90)); // Y
+		backPistons.whileHeld(new KeepState(40)); // Y
 	}
 }

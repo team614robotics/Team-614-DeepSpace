@@ -122,7 +122,6 @@ public class Drivetrain extends Subsystem implements PIDOutput{
 	}
 
 	public void arcadeDrive(double speed, double rotate) {
-
 		drive.arcadeDrive(speed, rotate);
 		canSparkMaxA.set(speed);
 		canSparkMaxB.setInverted(true);

@@ -44,7 +44,7 @@ public class Intake extends Subsystem {
 
  public Intake() {
   sparkMaxE = new CANSparkMax(0, MotorType.kBrushless);
-  sparkMaxF = new CANSparkMax(RobotMap.sparkMaxF, MotorType.kBrushless);
+  sparkMaxF = new CANSparkMax(1, MotorType.kBrushless);
   pidController1 = new CANPIDController(sparkMaxE);
   pidController2 = new CANPIDController(sparkMaxF);
  }
@@ -73,7 +73,7 @@ public class Intake extends Subsystem {
    pidController1.setP(0.4);
    pidController1.setI(0.0012);
    pidController1.setD(0.001);
-   pidController1.setOutputRange(-1, 1);
+   pidController1.setOutputRange(-0.5, 0.5);
    pidController1.setReference(target, ControlType.kPosition);
  }
 
@@ -81,7 +81,7 @@ public class Intake extends Subsystem {
    pidController2.setP(0.4);
    pidController2.setI(0.0012);
    pidController2.setD(0.001);
-   pidController2.setOutputRange(-1, 1);
+   pidController2.setOutputRange(-0.5, 0.5);
    pidController2.setReference(target, ControlType.kPosition);
  }
 }

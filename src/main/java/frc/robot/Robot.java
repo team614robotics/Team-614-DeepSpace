@@ -163,6 +163,7 @@ public class Robot extends TimedRobot {
 
 		// SmartDashboard.putNumber("Drivetrain Left Encoder Get",
 		// drivetrain.leftEncoder.get());
+		Robot.intake.sparkMaxE.getEncoder().setPosition(0);
 		SmartDashboard.putBoolean("Controller Value", Math.abs(-OI.driverController.getTriggerAxis(Hand.kRight) + OI.driverController.getTriggerAxis(Hand.kLeft)) < 0.003);
 		SmartDashboard.putBoolean("PistonOut", false);
 		SmartDashboard.putBoolean("LimitSwitch: ", limit.get());
@@ -314,6 +315,7 @@ public class Robot extends TimedRobot {
 			autonomousCommand.start();
 
 		}
+		
 
 	}
 
@@ -335,6 +337,7 @@ public class Robot extends TimedRobot {
 
 	public void teleopInit() {
 
+		Robot.intake.sparkMaxE.getEncoder().setPosition(0);
 		// This makes sure that the autonomous stops running when
 
 		// teleop starts running. If you want the autonomous to
@@ -350,6 +353,9 @@ public class Robot extends TimedRobot {
 		}
 		// Robot.drivetrain.leftEncoder.reset();
 		Robot.arm.zeroSensor();
+		Robot.intake.sparkMaxE.getEncoder().setPosition(0);
+		Robot.intake.sparkMaxF.getEncoder().setPosition(0);
+		Robot.intake.sparkMaxF.getEncoder().setPosition(0);
 
 	}
 
@@ -363,6 +369,7 @@ public class Robot extends TimedRobot {
 
 	public void teleopPeriodic() {
 
+		
 		Scheduler.getInstance().run();
 		// SmartDashboard.putNumber("Drivetrain Left Encoder Distance",
 		// drivetrain.leftEncoder.getDistance());
@@ -379,7 +386,8 @@ public class Robot extends TimedRobot {
 		Robot.arm.hawkTalonA
 				.setConfig(new SRXPID(SmartDashboard.getNumber("Arm F", 0), SmartDashboard.getNumber("Arm P", 0),
 						SmartDashboard.getNumber("Arm I", 0), SmartDashboard.getNumber("Arm D", 0)), 0);
-		SmartDashboard.putNumber("Encoder", Robot.intake.sparkMaxE.getEncoder().getPosition());
+		SmartDashboard.putNumber("Encoder Left", Robot.intake.sparkMaxE.getEncoder().getPosition());
+		SmartDashboard.putNumber("Encoder Right", Robot.intake.sparkMaxF.getEncoder().getPosition());
 		SmartDashboard.putNumber("Error: ", 0);
 		SmartDashboard.putNumber("Velocity: ", 0);
 		SmartDashboard.putBoolean("Limit Switch: ", limit.get());
