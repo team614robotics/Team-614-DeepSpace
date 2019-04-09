@@ -50,6 +50,7 @@ public class Robot extends TimedRobot {
 	public static Climber climber;
 	public static Intake intake;
 	public static OI oi;
+	
 
 	private DigitalInput limit;
 	private boolean rumbling = false;

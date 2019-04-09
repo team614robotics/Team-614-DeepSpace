@@ -3,8 +3,8 @@ package frc.robot.subsystems;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+// import com.revrobotics.CANSparkMax;
+// import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;

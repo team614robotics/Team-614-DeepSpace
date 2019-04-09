@@ -31,31 +31,30 @@ public class DriveToTarget extends Command {
 	protected void initialize() {
 		Robot.vision.setPipeline(pipeline);
 		Robot.vision.setCamMode(camMode);
+		Robot.navX.reset();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		double c = Robot.vision.getX() < 0 ? -0.35 : 0.35;
 		// Robot.vision.getDistance() * -0.0035 - 0.35
-		Robot.drivetrain.arcadeDrive(0.45, (Robot.vision.getX() * 0.02) + c);
+		Robot.drivetrain.arcadeDrive(0.5, (Robot.vision.getX() * 0.023) + c);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return Robot.vision.getDistance() < 35;
+		return false;
 		// return false;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.drivetrain.stop();
 		Robot.vision.stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		Robot.drivetrain.stop();
 		Robot.vision.stop();
 	}
 }

@@ -15,6 +15,7 @@ import frc.robot.commands.autonomous.DeliverHatch;
 import frc.robot.commands.climber.DeployClimber;
 import frc.robot.commands.climber.RetractClimber;
 import frc.robot.commands.climber.ToggleClimber;
+import frc.robot.commands.drivetrain.DriveToTarget;
 import frc.robot.commands.arm.MoveArm;
 import frc.robot.commands.arm.ToggleManual;
 import frc.robot.commands.grabber.ToggleGrabber;
@@ -73,13 +74,16 @@ public class OI {
 	public static final Button moveElevatorMedium = new JoystickButton(operatorController, BButton);
 	public static final Button moveElevatorLow = new JoystickButton(operatorController, AButton);
 	public static final Button toggleManual = new JoystickButton(operatorController, XButton);
-
+	
 	public static final Button deployClimber = new JoystickButton(operatorController, RightBumper);
 	public static final Button retractClimber = new JoystickButton(operatorController, LeftBumper);
 
 	public static final Button toggleGrabber = new JoystickButton(driverController, XButton);
 	public static final Button toggleClimber = new JoystickButton(operatorController, YButton);
 
+
+	public static final Button driveToTarget = new JoystickButton(driverController,YButton);
+	
 	public OI() {
 
 		deliverHatch.whileHeld(new DeliverHatch());
@@ -95,5 +99,8 @@ public class OI {
 
 		toggleGrabber.whenPressed(new ToggleGrabber());
 		toggleClimber.whenPressed(new ToggleClimber());
+
+		// driverToTarget.whileHeld(new DriveToTarget(0, 0));
+		driveToTarget.whileHeld(new DriveToTarget(0,0));
 	}
 }
